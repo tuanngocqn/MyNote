@@ -4,22 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    tools:context=".view.MainActivity">
+ <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:titleTextColor="#ffff"
+            android:background="#00BCD4"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="?attr/actionBarSize"/>
+</com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-       android:id="@+id/fba_add"
-        android:tooltipText="Add new session"
+        android:id="@+id/fba_add"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:src="@android:drawable/ic_input_add"
         android:layout_margin="16dp"
-        android:layout_height="wrap_content"/>
+        android:foreground="@drawable/ic_add"
+        android:foregroundGravity="center_vertical|center"
+        android:tooltipText="Add new session"
+        app:backgroundTint="#FFEB3B" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
