@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         fabAdd = findViewById(R.id.fba_add);
         toolbarMain= findViewById(R.id.toolbar_main);
+        toolbarMain.setNavigationIcon(R.drawable.ic_home_24px);
     }
     private void DrawToolbar()
     {
