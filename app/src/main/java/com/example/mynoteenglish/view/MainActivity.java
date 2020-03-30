@@ -1,34 +1,64 @@
 package com.example.mynoteenglish.view;
 
-import androidx.appcompat.app.ActionBar;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.KeyEventDispatcher;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.mynoteenglish.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
-    FloatingActionButton flbAdd;
+    FloatingActionButton fabAdd;
+    Toolbar toolbarMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         Mapping ();
+        DrawToolbar();
         SetEventOnclick();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_setting :
+                Toast.makeText(this, "SETING", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_find :
+                Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void SetEventOnclick()
     {
-        flbAdd.setOnClickListener(this);
+        fabAdd.setOnClickListener(this);
     }
     protected  void Mapping ()
     {
-        flbAdd = findViewById(R.id.fba_add);
+        fabAdd = findViewById(R.id.fba_add);
+        toolbarMain= findViewById(R.id.toolbar_main);
+    }
+    private void DrawToolbar()
+    {
+        setSupportActionBar(toolbarMain);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
     @Override
     public void onClick(View v) {

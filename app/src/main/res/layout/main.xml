@@ -7,15 +7,14 @@
     tools:context=".view.MainActivity">
  <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
-    android:layout_height="40dp">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            app:titleTextColor="#ffff"
-            android:background="#00BCD4"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+    android:layout_height="wrap_content">
+     <androidx.appcompat.widget.Toolbar
+         android:id="@+id/toolbar_main"
+         android:layout_width="match_parent"
+         android:layout_height="?attr/actionBarSize"
+         android:background="#FFEB3B"
+         app:titleTextColor="#ffff" />
 </com.google.android.material.appbar.AppBarLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fba_add"
         android:layout_width="wrap_content"
