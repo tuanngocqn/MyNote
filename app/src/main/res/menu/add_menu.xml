@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="Find"
-        android:id="@+id/menu_find"
-        android:icon="@drawable/ic_search_24px"
-        android:orderInCategory="0"
+    <item android:title="Like"
+        android:orderInCategory="1"
+        android:id="@+id/menu_favorite"
+        android:icon="@drawable/ic_favorite_border_black_24dp"
         app:showAsAction="always"/>
-    <item  android:title="Setting"
-        android:icon="@drawable/ic_search_24px"
-        android:id="@+id/menu_setting"
-        android:orderInCategory="1"/>
+    <item android:title="Save"
+        android:icon="@drawable/ic_save_gray_24dp"
+        app:showAsAction="always"/>
+
 </menu>

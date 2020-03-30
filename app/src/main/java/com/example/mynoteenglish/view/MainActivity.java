@@ -1,6 +1,5 @@
 package com.example.mynoteenglish.view;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     FloatingActionButton fabAdd;
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -82,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.fba_add:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).show();
+                Intent intent= new Intent(MainActivity.this,add_item.class);
+                startActivity(intent);
                 break;
             default:
                 break;

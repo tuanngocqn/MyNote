@@ -6,8 +6,5 @@
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">#3F51B5</item>
         <item name="colorAccent">#FFEB3B</item>
-<!--        <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>-->
-<!--        <item name="android:contextPopupMenuStyle">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>-->
-<!--        <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>-->
     </style>
 </resources>
