@@ -7,8 +7,4 @@
         <item name="colorPrimaryDark">#3F51B5</item>
         <item name="colorAccent">#FFEB3B</item>
     </style>
-    <style name="Namefile" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="android:textColorHint">#3F51B5</item>
-    </style>
-
 </resources>

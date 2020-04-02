@@ -90,9 +90,10 @@
                       android:textColor="#ffffff"
                       android:textAllCaps="false"
                       android:layout_marginLeft="20dp"
+                      android:padding="5dp"
                       android:layout_marginBottom="7dp"
                       android:layout_marginTop="10dp"
-                      android:background="@drawable/outline_black"
+                      android:background="@drawable/speedandenglish"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"/>
                   <Button
@@ -126,7 +127,7 @@
                       android:layout_marginEnd="20dp"
                       android:layout_marginBottom="7dp"
                       android:layout_toEndOf="@+id/button_repeat"
-                      android:background="@drawable/outline_black"
+                      android:background="@drawable/speedandenglish"
                       android:text="EN"
                       android:textColor="#ffffff" />
               </RelativeLayout>

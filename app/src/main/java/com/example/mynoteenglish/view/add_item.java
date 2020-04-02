@@ -1,10 +1,21 @@
 package com.example.mynoteenglish.view;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,24 +24,116 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.viewmodel.LibText2Speed;
+import com.example.mynoteenglish.viewmodel.LibTextToSpeedCompleted;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class add_item extends AppCompatActivity implements View.OnClickListener {
+import java.util.HashMap;
+import java.util.Locale;
 
+public class add_item extends AppCompatActivity implements View.OnClickListener{
+    boolean statusPlay=false,statusLike=false,isStatusSaved=false,statusRepeat=false;
+    AlertDialog.Builder builder;
+    LibTextToSpeedCompleted Text2Speed;
     Toolbar toolbarAdd;
     EditText edittextTextInput;
-    Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay;
+    Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
     FloatingActionButton fabAddVocabulary;
+    Menu menuAdd;
+    MenuItem menuSave,menuFavorite;
+    final String[] arrayLang=  {"ENGLISH","TIẾNG VIỆT"};
+    final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
+    int indexSpeed=2;
+    int indexLang=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        initital();
         mapping();
         DrawToobar();
+        SetEventClick();
     }
 
     @Override
+    protected void onStop() {
+        Log.d("BBB","OnStOP");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d("BBB","OnStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("BBB","OnPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d("BBB","OnRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("BBB","OnResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("BBB","OnDestroy");
+       Text2Speed.SetStop();
+        super.onDestroy();
+    }
+
+    private void initital() {
+        Text2Speed = new LibTextToSpeedCompleted(add_item.this);
+    }
+
+    private void SetEventClick()
+     {
+         buttonPlay.setOnClickListener(this);
+         buttonTag.setOnClickListener(this);
+         buttonSpeed.setOnClickListener(this);
+         buttonLanguage.setOnClickListener(this);
+         buttonRepeat.setOnClickListener(this);
+         toolbarAdd.setNavigationOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Text2Speed.SetStop();
+                 Intent intent= new Intent(add_item.this,MainActivity.class);
+                 startActivity(intent);
+             }
+         });
+         edittextTextInput.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+             }
+
+             @Override
+             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                 menuSave= menuAdd.getItem(0);
+                 isStatusSaved=true;
+                 menuSave.setIcon(R.drawable.ic_save_black_24dp);
+             }
+
+             @Override
+             public void afterTextChanged(Editable s) {
+
+             }
+         });
+
+     }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menuAdd=menu;
         getMenuInflater().inflate(R.menu.add_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -39,6 +142,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener 
         setSupportActionBar(toolbarAdd);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
     private void mapping()
     {
@@ -46,16 +150,33 @@ public class add_item extends AppCompatActivity implements View.OnClickListener 
         buttonLanguage=findViewById(R.id.button_Language);
         buttonPlay = findViewById(R.id.button_Play);
         buttonSpeed = findViewById(R.id.button_Speed);
+        buttonRepeat = findViewById(R.id.button_repeat);
         buttonTag= findViewById(R.id.button_Tag);
         edittextTextInput = findViewById(R.id.edittext_inputtext);
         fabAddVocabulary = findViewById(R.id.fba_add);
+
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
         {
             case R.id.menu_favorite:
-                Toast.makeText(getApplicationContext(),"Clicked favorite",Toast.LENGTH_SHORT).show();
+                statusLike=!statusLike;
+                if (!statusLike)
+                {
+                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                }
+                else
+                {
+                    item.setIcon(R.drawable.ic_favorite_red_24dp);
+                }
+                break;
+            case R.id.menu_Save:
+                if (isStatusSaved)
+                {
+                    item.setIcon(R.drawable.ic_save_gray_24dp);
+                    isStatusSaved=false;
+                }
                 break;
             default:
                 break;
@@ -67,7 +188,70 @@ public class add_item extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId())
         {
-
+            case R.id.button_Play:
+                if (!statusPlay)
+                {
+                    Text2Speed.speak(edittextTextInput.getText().toString());
+                    buttonPlay.setBackgroundResource(R.drawable.ic_stop_black_24dp);
+                }
+               else
+                {
+                    Text2Speed.SetStop();
+                    buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                }
+                statusPlay=!statusPlay;
+                break;
+            case R.id.button_repeat:
+                if (!statusRepeat) {
+                    Text2Speed.SetRepeat(true);
+                    buttonRepeat.setBackgroundResource(R.drawable.ic_repeat_red_24dp);
+                }
+                else
+                {
+                    Text2Speed.SetRepeat(false);
+                    buttonRepeat.setBackgroundResource(R.drawable.ic_repeat_white_24dp);
+                }
+                statusRepeat=!statusRepeat;
+                break;
+            case R.id.button_Language:
+                builder = new AlertDialog.Builder(add_item.this);
+                builder.setTitle("Choose your language");
+                builder.setSingleChoiceItems(arrayLang, indexLang, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        indexLang=position;
+                        if (position==0 )
+                        {
+                            Text2Speed.SetLanguage(Locale.ENGLISH);
+                            buttonLanguage.setText("EN");
+                            dialog.dismiss();
+                        }
+                        else
+                        {
+                            Text2Speed.SetLanguage(new Locale("vi","VN"));
+                            buttonLanguage.setText("VN");
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+                break;
+            case R.id.button_Speed:
+                builder = new AlertDialog.Builder(add_item.this);
+                builder.setTitle("Choose your speed");
+                builder.setSingleChoiceItems(arraySpeed, indexSpeed, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                            indexSpeed= position;
+                            Text2Speed.SetSpeed(Float.valueOf(arraySpeed[position]));
+                            buttonSpeed.setText("Speed x"+arraySpeed[position]);
+                            dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
+            default:
+                break;
         }
     }
 }
