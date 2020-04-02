@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private  void viewRecyclerviewMain()
     { arrayList= new ArrayList<>();
+    for(int i=0 ;i<30;i++)
       arrayList.add(new classNoteMain("Bai 1","I love you","2020"));
         noteMainAdapter= new NoteMainAdapter(arrayList);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));

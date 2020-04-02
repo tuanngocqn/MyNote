@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:background="#ffffff"
     android:layout_height="match_parent"
     tools:context=".view.add_item">
     <com.google.android.material.appbar.AppBarLayout
@@ -15,6 +15,124 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#FFEB3B" />
     </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fba_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="65dp"
+        android:foreground="@drawable/ic_add"
+        android:foregroundGravity="center_vertical|center"
+        android:tooltipText="Add new session"
+        app:backgroundTint="#FFEB3B" />
+  <LinearLayout
+      android:layout_marginTop="?attr/actionBarSize"
+      android:layout_width="match_parent"
+      android:orientation="vertical"
+      android:background="#ffffff"
+      android:layout_height="match_parent">
+      <Button
+          android:id="@+id/button_Tag"
+          android:layout_marginLeft="5dp"
+          android:layout_marginTop="15dp"
+          android:layout_width="wrap_content"
+          android:layout_height="25dp"
+          android:text="No Tag"
+          android:hint="Your tag"
+          android:background="@drawable/outline_button" />
+      <com.google.android.material.textfield.TextInputLayout
+          android:paddingTop="1dp"
+          android:hint="Your name notes"
+          android:id="@+id/textview_Name"
+          app:endIconMode="clear_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <com.google.android.material.textfield.TextInputEditText
+              android:layout_width="match_parent"
+              android:paddingLeft="10dp"
+              android:layout_height="wrap_content" />
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+              <ScrollView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_above="@id/Relative_add"
+                  android:layout_marginTop="15dp"
+                  android:layout_marginBottom="-16dp">
 
+                  <EditText
+                      android:id="@+id/edittext_inputtext"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_margin="10dp"
+                      android:autoLink="all"
+                      android:autofillHints="@android:string/copy"
+                      android:background="#ffff"
+                      android:cursorVisible="true"
+                      android:defaultFocusHighlightEnabled="true"
+                      android:focusable="true"
+                      android:focusableInTouchMode="true"
+                      android:hint="Input your text..."
+                      android:inputType="textMultiLine"
+                      android:scrollbarAlwaysDrawVerticalTrack="true" />
+              </ScrollView>
+              <RelativeLayout
+                  android:id="@+id/Relative_add"
+                  android:layout_alignParentBottom="true"
+                  android:layout_width="match_parent"
+                  android:background="#040404"
+                  android:layout_height="50dp">
+                  <Button
+                      android:id="@+id/button_Speed"
+                      android:text="Speed x1"
+                      android:textColor="#ffffff"
+                      android:textAllCaps="false"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginBottom="7dp"
+                      android:layout_marginTop="10dp"
+                      android:background="@drawable/outline_black"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+                  <Button
+                      android:id="@+id/button_Play"
+                      android:layout_width="46dp"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentBottom="true"
+                      android:layout_centerHorizontal="true"
+                      android:background="@drawable/ic_play_circle_filled_black_24dp" />
 
-</LinearLayout>
+                  <Button
+                      android:id="@+id/button_repeat"
+                      android:layout_width="41dp"
+                      android:layout_height="41dp"
+                      android:layout_marginStart="23dp"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginBottom="7dp"
+                      android:layout_toEndOf="@+id/button_Play"
+                      android:background="@drawable/ic_repeat_white_24dp"
+                      android:textAllCaps="false"
+                      android:textColor="#ffffff" />
+
+                  <Button
+                      android:id="@+id/button_Language"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="14dp"
+                      android:layout_marginLeft="30dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginEnd="20dp"
+                      android:layout_marginBottom="7dp"
+                      android:layout_toEndOf="@+id/button_repeat"
+                      android:background="@drawable/outline_black"
+                      android:text="EN"
+                      android:textColor="#ffffff" />
+              </RelativeLayout>
+          </RelativeLayout>
+
+      </com.google.android.material.textfield.TextInputLayout>
+  </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

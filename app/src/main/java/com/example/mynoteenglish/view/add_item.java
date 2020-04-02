@@ -8,14 +8,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class add_item extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbarAdd;
-
+    EditText edittextTextInput;
+    Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay;
+    FloatingActionButton fabAddVocabulary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,12 @@ public class add_item extends AppCompatActivity implements View.OnClickListener 
     private void mapping()
     {
         toolbarAdd= findViewById(R.id.toolbar_add);
+        buttonLanguage=findViewById(R.id.button_Language);
+        buttonPlay = findViewById(R.id.button_Play);
+        buttonSpeed = findViewById(R.id.button_Speed);
+        buttonTag= findViewById(R.id.button_Tag);
+        edittextTextInput = findViewById(R.id.edittext_inputtext);
+        fabAddVocabulary = findViewById(R.id.fba_add);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
