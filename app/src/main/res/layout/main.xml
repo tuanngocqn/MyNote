@@ -17,9 +17,11 @@
     </com.google.android.material.appbar.AppBarLayout>
    <LinearLayout
        android:layout_width="match_parent"
+       android:background="@color/main"
        android:orientation="vertical"
        android:layout_height="match_parent">
        <TextView
+           android:id="@+id/textview_tagnote"
            android:textColor="#000000"
            android:textSize="25dp"
            android:layout_marginTop="?attr/actionBarSize"
@@ -31,7 +33,7 @@
            android:layout_height="wrap_content"/>
        <TextView
            android:textColor="#000000"
-           android:id="@+id/txt_SumNotes"
+           android:id="@+id/textview_sumnotes"
            android:paddingBottom="20sp"
            android:gravity="center"
            android:text="0 notes"
@@ -41,6 +43,7 @@
            android:id="@+id/recyclerview_Main"
            tools:listitem="@layout/layout_recyclerview_main"
            android:layout_width="match_parent"
+           android:background="@color/main"
            android:layout_height="wrap_content">
        </androidx.recyclerview.widget.RecyclerView>
    </LinearLayout>

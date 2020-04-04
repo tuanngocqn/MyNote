@@ -3,6 +3,7 @@ package com.example.mynoteenglish.viewmodel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,9 +30,17 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.NoteMa
     @Override
     public void onBindViewHolder(@NonNull NoteMainHolder holder, final int position) {
             classNoteMain classNoteMain= arrayList.get(position);
-            holder.txtName.setText(classNoteMain.getName());
-            holder.txtDate.setText(classNoteMain.getDateCreate());
-            holder.txtContent.setText(classNoteMain.getContent());
+            holder.textViewName.setText(classNoteMain.getmName());
+            holder.textViewDate.setText(classNoteMain.getmDateCreate());
+            holder.textViewContent.setText(classNoteMain.getmContent());
+            if (classNoteMain.getmFavorite().equals("false"))
+            {
+                holder.imagebuttonFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            }
+            else
+            {
+                holder.imagebuttonFavorite.setImageResource(R.drawable.ic_favorite_red_24dp);
+            }
     }
 
     @Override
@@ -41,13 +50,14 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.NoteMa
 
     public  class  NoteMainHolder extends  RecyclerView.ViewHolder
     {
-        TextView txtName,txtDate,txtContent;
+        TextView textViewName,textViewDate,textViewContent;
+        ImageButton imagebuttonFavorite;
         public NoteMainHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.idtxtName);
-            txtDate= itemView.findViewById(R.id.idtxtDate);
-            txtContent= itemView.findViewById(R.id.idtxtContent);
-
+            textViewName = itemView.findViewById(R.id.textviewrecy_name);
+            textViewDate= itemView.findViewById(R.id.textviewrecy_datecreate);
+            textViewContent= itemView.findViewById(R.id.textviewrecy_content);
+            imagebuttonFavorite= itemView.findViewById(R.id.imagebutton_Favorite);
         }
     }
 }

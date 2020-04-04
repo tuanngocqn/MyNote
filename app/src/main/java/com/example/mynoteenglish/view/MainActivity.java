@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.mynoteenglish.R;
 import com.example.mynoteenglish.model.classNoteMain;
+import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.NoteMainAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,24 +26,33 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     FloatingActionButton fabAdd;
     Toolbar toolbarMain;
-    RecyclerView recyclerView;
-    TextView tvSumnotes;
+    RecyclerView recyclerViewMain;
+    TextView textViewSumnotes,textViewTagNotes;
     ArrayList<classNoteMain> arrayList;
     NoteMainAdapter noteMainAdapter;
+    DBManager dbManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        initilize();
         Mapping ();
         DrawToolbar();
         SetEventOnclick();
         viewRecyclerviewMain();
     }
+
+    private void initilize() {
+        dbManager= new DBManager(this);
+    }
+
     protected  void Mapping ()
     {
         fabAdd = findViewById(R.id.fba_add);
         toolbarMain= findViewById(R.id.toolbar_main);
-        recyclerView= findViewById(R.id.recyclerview_Main);
+        recyclerViewMain= findViewById(R.id.recyclerview_Main);
+        textViewSumnotes= findViewById(R.id.textview_sumnotes);
+        textViewTagNotes= findViewById(R.id.textview_tagnote);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,12 +97,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    @Override
+    protected void onPostResume() {
+
+        arrayList.clear();
+        arrayList.addAll(dbManager.GetAllNote());
+        if (arrayList!=null)
+        {
+            textViewSumnotes.setText(arrayList.size() + " Notes");
+        }
+        else { textViewSumnotes.setText("0 Notes");}
+        noteMainAdapter.notifyDataSetChanged();
+        super.onPostResume();
+    }
+
     private  void viewRecyclerviewMain()
-    { arrayList= new ArrayList<>();
-    for(int i=0 ;i<30;i++)
-      arrayList.add(new classNoteMain("Bai 1","I love you","2020"));
+    {   arrayList= new ArrayList<>();
         noteMainAdapter= new NoteMainAdapter(arrayList);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(noteMainAdapter);
+        recyclerViewMain.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        recyclerViewMain.setAdapter(noteMainAdapter);
     }
 }

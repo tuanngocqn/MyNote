@@ -1,18 +1,13 @@
 package com.example.mynoteenglish.view;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,25 +16,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
-import com.example.mynoteenglish.viewmodel.LibText2Speed;
+import com.example.mynoteenglish.model.classNoteMain;
+import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.LibTextToSpeedCompleted;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class add_item extends AppCompatActivity implements View.OnClickListener{
     boolean statusPlay=false,statusLike=false,isStatusSaved=false,statusRepeat=false;
     AlertDialog.Builder builder;
+    DBManager dbManager;
     LibTextToSpeedCompleted Text2Speed;
     Toolbar toolbarAdd;
-    EditText edittextTextInput;
+    EditText edittextTextInput,editName;
     Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
     FloatingActionButton fabAddVocabulary;
     Menu menuAdd;
+    classNoteMain classNoteMain;
     MenuItem menuSave,menuFavorite;
     final String[] arrayLang=  {"ENGLISH","TIẾNG VIỆT"};
     final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
@@ -54,48 +52,40 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         DrawToobar();
         SetEventClick();
     }
-
     @Override
     protected void onStop() {
         Log.d("BBB","OnStOP");
         super.onStop();
     }
-
     @Override
     protected void onStart() {
         Log.d("BBB","OnStart");
         super.onStart();
     }
-
     @Override
     protected void onPause() {
         Log.d("BBB","OnPause");
         super.onPause();
     }
-
     @Override
     protected void onRestart() {
         Log.d("BBB","OnRestart");
         super.onRestart();
     }
-
     @Override
     protected void onResume() {
         Log.d("BBB","OnResume");
         super.onResume();
     }
-
     @Override
     protected void onDestroy() {
         Log.d("BBB","OnDestroy");
        Text2Speed.SetStop();
         super.onDestroy();
     }
-
     private void initital() {
         Text2Speed = new LibTextToSpeedCompleted(add_item.this);
     }
-
     private void SetEventClick()
      {
          buttonPlay.setOnClickListener(this);
@@ -107,8 +97,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
              @Override
              public void onClick(View v) {
                  Text2Speed.SetStop();
-                 Intent intent= new Intent(add_item.this,MainActivity.class);
-                 startActivity(intent);
+                 Checksavedata();
              }
          });
          edittextTextInput.addTextChangedListener(new TextWatcher() {
@@ -131,8 +120,43 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
          });
 
      }
+     private  void Checksavedata()
+     {
+         if (isStatusSaved)
+         {
+             builder = new AlertDialog.Builder(add_item.this);
+             builder.setTitle("Do you want to save your change?");
+             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                     classNoteMain = CreateNote();
+                     if(classNoteMain!=null)
+                         dbManager.addNotes(classNoteMain);
+                     dialog.dismiss();
+                     Intent intent= new Intent(add_item.this,MainActivity.class);
+                     startActivity(intent);
+                 }
+             });
+             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                         dialog.dismiss();
+                         Intent intent= new Intent(add_item.this,MainActivity.class);
+                         startActivity(intent);
+                 }
+             });
+             builder.setNeutralButton("Canel", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                     dialog.dismiss();
+                 }
+             });
+             builder.show();
+         }
+     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         menuAdd=menu;
         getMenuInflater().inflate(R.menu.add_menu,menu);
         return super.onCreateOptionsMenu(menu);
@@ -153,11 +177,15 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         buttonRepeat = findViewById(R.id.button_repeat);
         buttonTag= findViewById(R.id.button_Tag);
         edittextTextInput = findViewById(R.id.edittext_inputtext);
+        editName= findViewById(R.id.edit_name);
         fabAddVocabulary = findViewById(R.id.fba_add);
+        dbManager= new DBManager(this);
+
 
     }
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         switch (item.getItemId())
         {
             case R.id.menu_favorite:
@@ -175,6 +203,9 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
                 if (isStatusSaved)
                 {
                     item.setIcon(R.drawable.ic_save_gray_24dp);
+                    classNoteMain classNoteMain= CreateNote();
+                    if(classNoteMain!=null)
+                    dbManager.addNotes(classNoteMain);
                     isStatusSaved=false;
                 }
                 break;
@@ -183,9 +214,21 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         }
         return super.onOptionsItemSelected(item);
     }
+    private classNoteMain CreateNote()
+    {
+         String name= editName.getText().toString();
+         String content= edittextTextInput.getText().toString();
+         SimpleDateFormat dateFormat= new SimpleDateFormat("dd MM,yyyy");
+         String datecreate= dateFormat.format(new Date());
+         String dateupdate= dateFormat.format(new Date());
+         String tagname= buttonTag.getText().toString();
+         String favorite= (statusLike==true)?"true":"false";
+         return  new classNoteMain(name,content,datecreate,dateupdate,tagname,favorite);
 
+    }
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId())
         {
             case R.id.button_Play:

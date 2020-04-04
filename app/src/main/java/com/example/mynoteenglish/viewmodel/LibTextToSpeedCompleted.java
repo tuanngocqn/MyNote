@@ -14,6 +14,7 @@ import com.example.mynoteenglish.view.MainActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
 {
@@ -23,6 +24,7 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
     Activity mainActivity;
     private boolean initialized;
     private String queuedText;
+    Boolean Ready=false;
     private String TAG = "TTS";
     private TextToSpeech tts;
     private String  textTospeak ="";
@@ -31,10 +33,16 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         mainActivity= activity;
         tts = new TextToSpeech(activity, this /* listener */);
         tts.setOnUtteranceProgressListener(mProgressListener);
-        Log.d(TAG,"TTS create");
+        Log.d("bbb","Creat this program");
     }
     public void speak(String text) {
         checkstatus=false;
+        if (!Ready)
+        {
+            Toast.makeText(mainActivity,"Text to speech not ready",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!initialized) {
             queuedText = text;
             return;
@@ -68,7 +76,25 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
     }
     public  void SetLanguage(Locale locale)
     {
-        tts.setLanguage(locale);
+        int result =tts.setLanguage(locale);
+        if (result==TextToSpeech.LANG_MISSING_DATA)
+        {
+            this.Ready=false;
+            Toast.makeText(mainActivity,"LANG_MISSING_DATA",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else  if(result==TextToSpeech.LANG_NOT_SUPPORTED)
+        {
+            this.Ready=false;
+            Toast.makeText(mainActivity,"LANG_NOT_SUPPORTED",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+        {
+            this.Ready=true;
+            Locale currentLanguage= tts.getVoice().getLocale();
+            Toast.makeText(mainActivity,"Language "+ currentLanguage,Toast.LENGTH_SHORT).show();
+        }
     }
     public  void SetSpeed(Float value)
     {
@@ -91,7 +117,7 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         Log.d(TAG,"TTS Init");
         if (status == TextToSpeech.SUCCESS) {
             initialized = true;
-            tts.setLanguage(Locale.ENGLISH);
+            SetLanguage(Locale.ENGLISH);
 
             if (queuedText != null) {
                 speak(queuedText);
