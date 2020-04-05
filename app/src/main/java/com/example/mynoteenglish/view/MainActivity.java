@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected  void Mapping ()
     {
-        fabAdd = findViewById(R.id.fba_add);
+        fabAdd = findViewById(R.id.fba_main);
         toolbarMain= findViewById(R.id.toolbar_main);
         recyclerViewMain= findViewById(R.id.recyclerview_Main);
         textViewSumnotes= findViewById(R.id.textview_sumnotes);
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.fba_add:
+            case R.id.fba_main:
                 Intent intent= new Intent(MainActivity.this,add_item.class);
                 startActivity(intent);
                 break;

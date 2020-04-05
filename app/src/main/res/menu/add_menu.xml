@@ -8,7 +8,13 @@
         app:showAsAction="always"/>
     <item android:title="Save"
         android:id="@+id/menu_Save"
+        android:orderInCategory="0"
         android:icon="@drawable/ic_save_gray_24dp"
+        app:showAsAction="always"/>
+    <item android:title="Tag"
+        android:id="@+id/menu_tag"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_label_black_24dp"
         app:showAsAction="always"/>
 
 </menu>

@@ -11,11 +11,15 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
 import com.example.mynoteenglish.model.classNoteMain;
@@ -36,6 +40,8 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
     Toolbar toolbarAdd;
     EditText edittextTextInput,editName;
     Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
+    Button buttonalertYes,buttonalertNo;
+    EditText editTextalertInput;
     FloatingActionButton fabAddVocabulary;
     Menu menuAdd;
     classNoteMain classNoteMain,ObjectIntent;
@@ -122,6 +128,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
          buttonSpeed.setOnClickListener(this);
          buttonLanguage.setOnClickListener(this);
          buttonRepeat.setOnClickListener(this);
+         fabAddVocabulary.setOnClickListener(this);
          toolbarAdd.setNavigationOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -246,9 +253,6 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         edittextTextInput = findViewById(R.id.edittext_inputtext);
         editName= findViewById(R.id.edit_name);
         fabAddVocabulary = findViewById(R.id.fba_add);
-
-
-
     }
     private  void status_save_monitor()
     {
@@ -281,6 +285,27 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
                     isStatusSaved=false;
                 }
                 break;
+            case R.id.menu_tag:
+                View view = View.inflate(this, R.layout.alertaddtag, null);
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setView(view);
+                buttonalertNo= view.findViewById(R.id.buttonalert_no);
+                buttonalertYes= view.findViewById(R.id.buttonalert_yes);
+                editTextalertInput= view.findViewById(R.id.editextalert_input);
+                buttonalertYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(add_item.this,"Yes nhe",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                buttonalertNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(add_item.this,"No nhe",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alert.show();
+             break;
             default:
                 break;
         }
@@ -378,6 +403,27 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
                     }
                 });
                 builder.show();
+                break;
+            case R.id.fba_add:
+//                View view = View.inflate(this, R.layout.alertaddtag, null);
+//                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//                alert.setView(view);
+//                buttonalertNo= view.findViewById(R.id.buttonalert_no);
+//                buttonalertYes= view.findViewById(R.id.buttonalert_yes);
+//                editTextalertInput= view.findViewById(R.id.editextalert_input);
+//                buttonalertYes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(add_item.this,"Yes nhe",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                buttonalertNo.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(add_item.this,"No nhe",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                alert.show();
                 break;
             default:
                 break;
