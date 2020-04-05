@@ -63,6 +63,20 @@ public class DBManager extends SQLiteOpenHelper {
         db.insert(TABLE_NAME,null,contentValues);
         db.close();
     }
+    public  void updateNotes(classNoteMain note)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME,note.getmName());
+        contentValues.put(CONTENT,note.getmContent());
+        contentValues.put(DATECREATE,note.getmDateCreate());
+        contentValues.put(DATEUPDATE,note.getmDateUpdate());
+        contentValues.put(TAGNAME,note.getmTagName());
+        contentValues.put(FAVORITE,note.getmFavorite());
+        db.update(TABLE_NAME,contentValues,ID+"=?", new String[]{String.valueOf(note.getmID())});
+        db.close();
+
+    }
 
     public ArrayList<classNoteMain> GetAllNote() {
         ArrayList<classNoteMain> classNoteMains= new ArrayList<>();
@@ -85,5 +99,10 @@ public class DBManager extends SQLiteOpenHelper {
             while (cursor.moveToNext());
         }
         return classNoteMains;
+    }
+
+    public void Delete(String getmID) {
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME,ID+" =?",new String[]{getmID});
     }
 }

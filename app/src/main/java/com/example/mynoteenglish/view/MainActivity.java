@@ -1,5 +1,7 @@
 package com.example.mynoteenglish.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerNotes;
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.NoteMainAdapter;
@@ -22,8 +25,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
+    public  static  final String ITEM_SELECT = "item_select";
     FloatingActionButton fabAdd;
     Toolbar toolbarMain;
     RecyclerView recyclerViewMain;
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<classNoteMain> arrayList;
     NoteMainAdapter noteMainAdapter;
     DBManager dbManager;
+    AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initilize() {
         dbManager= new DBManager(this);
+        builder = new AlertDialog.Builder(MainActivity.this);
     }
 
     protected  void Mapping ()
@@ -117,5 +124,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         noteMainAdapter= new NoteMainAdapter(arrayList);
         recyclerViewMain.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         recyclerViewMain.setAdapter(noteMainAdapter);
+        ((NoteMainAdapter) Objects.requireNonNull(recyclerViewMain.getAdapter())).SetOnItemListenerNoteMain(new OnlistenerNotes() {
+            @Override
+            public void OnItemClickNotes(View view, int position) {
+                Intent intent= new Intent(MainActivity.this,add_item.class);
+                intent.putExtra(ITEM_SELECT,arrayList.get(position));
+                startActivity(intent);
+            }
+
+            @Override
+            public void OnItemLongClickNotes(View view, final int position) {
+                builder.setTitle("Do you want delete this item ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dbManager.Delete(arrayList.get(position).getmID());
+                                arrayList.remove(position);
+                                noteMainAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
+            }
+        });
     }
 }

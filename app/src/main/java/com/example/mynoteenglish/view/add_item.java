@@ -30,6 +30,7 @@ import java.util.Locale;
 public class add_item extends AppCompatActivity implements View.OnClickListener{
     boolean statusPlay=false,statusLike=false,isStatusSaved=false,statusRepeat=false;
     AlertDialog.Builder builder;
+    Intent intent;
     DBManager dbManager;
     LibTextToSpeedCompleted Text2Speed;
     Toolbar toolbarAdd;
@@ -37,7 +38,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
     Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
     FloatingActionButton fabAddVocabulary;
     Menu menuAdd;
-    classNoteMain classNoteMain;
+    classNoteMain classNoteMain,ObjectIntent;
     MenuItem menuSave,menuFavorite;
     final String[] arrayLang=  {"ENGLISH","TIẾNG VIỆT"};
     final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
@@ -52,6 +53,16 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         DrawToobar();
         SetEventClick();
     }
+
+    private void Getintent() {
+        intent= getIntent();
+        ObjectIntent= (classNoteMain)intent.getSerializableExtra(MainActivity.ITEM_SELECT);
+        if (ObjectIntent!=null)
+        {
+            Show_Intent(ObjectIntent);
+        }
+    }
+
     @Override
     protected void onStop() {
         Log.d("BBB","OnStOP");
@@ -85,6 +96,23 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
     }
     private void initital() {
         Text2Speed = new LibTextToSpeedCompleted(add_item.this);
+        dbManager= new DBManager(this);
+    }
+    private  void Show_Intent(classNoteMain classNoteMain)
+    {
+        if (classNoteMain.getmFavorite().equals("false")) {
+                statusLike=false;
+                menuFavorite.setIcon(R.drawable.ic_favorite_border_black_24dp);
+        }
+        else {
+                statusLike=true;
+                menuFavorite.setIcon(R.drawable.ic_favorite_red_24dp);
+        }
+        editName.setText(classNoteMain.getmName());
+        edittextTextInput.setText(classNoteMain.getmContent());
+        buttonTag.setText(classNoteMain.getmTagName());
+        menuSave.setIcon(R.drawable.ic_save_gray_24dp);
+        isStatusSaved=false;
     }
     private void SetEventClick()
      {
@@ -109,8 +137,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
              @Override
              public void onTextChanged(CharSequence s, int start, int before, int count) {
                  menuSave= menuAdd.getItem(0);
-                 isStatusSaved=true;
-                 menuSave.setIcon(R.drawable.ic_save_black_24dp);
+                 status_save_monitor();
              }
 
              @Override
@@ -120,20 +147,34 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
          });
 
      }
+     private  void SaveUpdated()
+     {
+         classNoteMain= CreateNote();
+         if(classNoteMain!=null)
+         {
+             if (ObjectIntent!=null)
+             {
+                 classNoteMain.setmID(ObjectIntent.getmID());
+                 dbManager.updateNotes(classNoteMain);
+             }
+             else
+             {
+                 dbManager.addNotes(classNoteMain);
+             }
+         }
+     }
      private  void Checksavedata()
      {
          if (isStatusSaved)
          {
              builder = new AlertDialog.Builder(add_item.this);
-             builder.setTitle("Do you want to save your change?");
+             builder.setMessage("Do you want to save ?");
              builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                  @Override
                  public void onClick(DialogInterface dialog, int which) {
-                     classNoteMain = CreateNote();
-                     if(classNoteMain!=null)
-                         dbManager.addNotes(classNoteMain);
+                     SaveUpdated();
                      dialog.dismiss();
-                     Intent intent= new Intent(add_item.this,MainActivity.class);
+                     intent= new Intent(add_item.this,MainActivity.class);
                      startActivity(intent);
                  }
              });
@@ -141,7 +182,7 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
                  @Override
                  public void onClick(DialogInterface dialog, int which) {
                          dialog.dismiss();
-                         Intent intent= new Intent(add_item.this,MainActivity.class);
+                         intent= new Intent(add_item.this,MainActivity.class);
                          startActivity(intent);
                  }
              });
@@ -153,12 +194,21 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
              });
              builder.show();
          }
+
+         else
+         {
+             intent= new Intent(add_item.this,MainActivity.class);
+             startActivity(intent);
+         }
      }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         menuAdd=menu;
         getMenuInflater().inflate(R.menu.add_menu,menu);
+        menuFavorite= menuAdd.getItem(1);
+        menuSave= menuAdd.getItem(0);
+        Getintent();
         return super.onCreateOptionsMenu(menu);
     }
     private void DrawToobar()
@@ -179,9 +229,14 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         edittextTextInput = findViewById(R.id.edittext_inputtext);
         editName= findViewById(R.id.edit_name);
         fabAddVocabulary = findViewById(R.id.fba_add);
-        dbManager= new DBManager(this);
 
 
+
+    }
+    private  void status_save_monitor()
+    {
+        isStatusSaved=true;
+        menuSave.setIcon(R.drawable.ic_save_black_24dp);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item)
@@ -189,23 +244,23 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
         switch (item.getItemId())
         {
             case R.id.menu_favorite:
-                statusLike=!statusLike;
                 if (!statusLike)
                 {
-                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    item.setIcon(R.drawable.ic_favorite_red_24dp);
+                    statusLike=true;
                 }
                 else
                 {
-                    item.setIcon(R.drawable.ic_favorite_red_24dp);
+                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    statusLike=false;
                 }
+                status_save_monitor();
                 break;
             case R.id.menu_Save:
                 if (isStatusSaved)
                 {
                     item.setIcon(R.drawable.ic_save_gray_24dp);
-                    classNoteMain classNoteMain= CreateNote();
-                    if(classNoteMain!=null)
-                    dbManager.addNotes(classNoteMain);
+                    SaveUpdated();
                     isStatusSaved=false;
                 }
                 break;
@@ -236,25 +291,27 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
                 {
                     Text2Speed.speak(edittextTextInput.getText().toString());
                     buttonPlay.setBackgroundResource(R.drawable.ic_stop_black_24dp);
+                    statusPlay=true;
                 }
                else
                 {
                     Text2Speed.SetStop();
+                    statusPlay=false;
                     buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
                 }
-                statusPlay=!statusPlay;
-                break;
+            break;
             case R.id.button_repeat:
                 if (!statusRepeat) {
                     Text2Speed.SetRepeat(true);
                     buttonRepeat.setBackgroundResource(R.drawable.ic_repeat_red_24dp);
+                    statusRepeat= true;
                 }
                 else
                 {
                     Text2Speed.SetRepeat(false);
                     buttonRepeat.setBackgroundResource(R.drawable.ic_repeat_white_24dp);
+                    statusRepeat=false;
                 }
-                statusRepeat=!statusRepeat;
                 break;
             case R.id.button_Language:
                 builder = new AlertDialog.Builder(add_item.this);

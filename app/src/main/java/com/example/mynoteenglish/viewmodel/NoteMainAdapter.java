@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerNotes;
 import com.example.mynoteenglish.model.classNoteMain;
 
 import java.util.ArrayList;
 
 public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.NoteMainHolder> {
     ArrayList<classNoteMain> arrayList;
+    OnlistenerNotes onlistenerNotes;
     public NoteMainAdapter(ArrayList<classNoteMain> arrayList) {
         this.arrayList = arrayList;
     }
@@ -41,6 +43,19 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.NoteMa
             {
                 holder.imagebuttonFavorite.setImageResource(R.drawable.ic_favorite_red_24dp);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onlistenerNotes.OnItemClickNotes(v,position);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onlistenerNotes.OnItemLongClickNotes(v,position);
+                    return  true;
+                }
+            });
     }
 
     @Override
@@ -59,5 +74,9 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.NoteMa
             textViewContent= itemView.findViewById(R.id.textviewrecy_content);
             imagebuttonFavorite= itemView.findViewById(R.id.imagebutton_Favorite);
         }
+    }
+    public void SetOnItemListenerNoteMain(OnlistenerNotes onlistenerNotes)
+    {
+        this.onlistenerNotes= onlistenerNotes;
     }
 }
