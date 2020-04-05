@@ -77,6 +77,25 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
 
     }
+    public int
+    GetID(classNoteMain noteMain)
+    {
+        int id=-1;
+        String selectQuery="SELECT * from "+ TABLE_NAME + " WHERE "+ NAME + " = ?"+" AND "+
+                CONTENT + " =? "+" AND "+
+                DATECREATE + " =?";
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,new String[]{noteMain.getmName(),noteMain.getmContent(),noteMain.getmDateCreate()});
+        if (cursor.moveToFirst())
+        {
+            do {
+                id=cursor.getInt(0);
+            }
+            while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return  id;
+    }
 
     public ArrayList<classNoteMain> GetAllNote() {
         ArrayList<classNoteMain> classNoteMains= new ArrayList<>();

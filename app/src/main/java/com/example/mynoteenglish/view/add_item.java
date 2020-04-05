@@ -91,7 +91,8 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         Log.d("BBB","OnDestroy");
-       Text2Speed.SetStop();
+        Text2Speed.SetStop();
+        Text2Speed.Shutdown();
         super.onDestroy();
     }
     private void initital() {
@@ -145,23 +146,39 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
 
              }
          });
+         editName.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+             }
+
+             @Override
+             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                 menuSave= menuAdd.getItem(0);
+                 status_save_monitor();
+             }
+
+             @Override
+             public void afterTextChanged(Editable s) {
+
+             }
+         });
 
      }
      private  void SaveUpdated()
      {
-         classNoteMain= CreateNote();
-         if(classNoteMain!=null)
-         {
-             if (ObjectIntent!=null)
+         if (ObjectIntent!=null)
              {
-                 classNoteMain.setmID(ObjectIntent.getmID());
+                 classNoteMain= CreateNoteUpdate();
                  dbManager.updateNotes(classNoteMain);
              }
              else
              {
+                 classNoteMain= CreateNote();
                  dbManager.addNotes(classNoteMain);
+                 ObjectIntent= classNoteMain;
+                 ObjectIntent.setmID(String.valueOf(dbManager.GetID(classNoteMain)));
              }
-         }
      }
      private  void Checksavedata()
      {
@@ -279,6 +296,18 @@ public class add_item extends AppCompatActivity implements View.OnClickListener{
          String tagname= buttonTag.getText().toString();
          String favorite= (statusLike==true)?"true":"false";
          return  new classNoteMain(name,content,datecreate,dateupdate,tagname,favorite);
+
+    }   private classNoteMain CreateNoteUpdate()
+    {
+         String id = ObjectIntent.getmID();
+         String name= editName.getText().toString();
+         String content= edittextTextInput.getText().toString();
+         SimpleDateFormat dateFormat= new SimpleDateFormat("dd MM,yyyy");
+         String datecreate= ObjectIntent.getmDateCreate();
+         String dateupdate= dateFormat.format(new Date());
+         String tagname= buttonTag.getText().toString();
+         String favorite= (statusLike==true)?"true":"false";
+         return  new classNoteMain(id,name,content,datecreate,dateupdate,tagname,favorite);
 
     }
     @Override

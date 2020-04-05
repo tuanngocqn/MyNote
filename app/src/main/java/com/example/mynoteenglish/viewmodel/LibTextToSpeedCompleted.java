@@ -103,6 +103,7 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
     public void SetStop()
     {
         tts.stop();
+
     }
     public void SetRepeat(boolean status)
     {
@@ -124,6 +125,11 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
             }
         }
     }
+
+    public void Shutdown() {
+        tts.shutdown();
+    }
+
     private abstract class runnable implements Runnable {
     }
 
