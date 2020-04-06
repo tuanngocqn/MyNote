@@ -11,10 +11,11 @@
         android:orderInCategory="0"
         android:icon="@drawable/ic_save_gray_24dp"
         app:showAsAction="always"/>
-    <item android:title="Tag"
+    <item
         android:id="@+id/menu_tag"
+        android:icon="@drawable/ic_turned_in_black_24dp"
         android:orderInCategory="2"
-        android:icon="@drawable/ic_label_black_24dp"
-        app:showAsAction="always"/>
+        android:title="Tag"
+        app:showAsAction="always" />
 
 </menu>

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.mynoteenglish.model.classNoteMain;
+import com.example.mynoteenglish.model.classTag;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +18,7 @@ import java.util.List;
 public class DBManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="notes_manager";
     private static final String TABLE_NAME="notes_table";
+    private static final String TABLE_NAME_TAG= "tag_table";
     private static final String ID="id";
     private static final String NAME="name";
     private static final String CONTENT="content";
@@ -24,7 +26,7 @@ public class DBManager extends SQLiteOpenHelper {
     private static final String DATEUPDATE="dateupdate";
     private static final String TAGNAME="tagname";
     private static final String FAVORITE="favorite";
-    private static final int VERSION=1;
+    private static final int VERSION=2;
     private String SQLQuery= "CREATE TABLE " +TABLE_NAME+" ("+
             ID+ " integer primary key, "+
             NAME +" TEXT, "+
@@ -34,7 +36,9 @@ public class DBManager extends SQLiteOpenHelper {
             TAGNAME +" TEXT, "+
             FAVORITE +" TEXT)";
 
-
+    private String SQLQuery_tag= "CREATE TABLE " +TABLE_NAME_TAG+" ("+
+            ID+ " integer primary key, "+
+            NAME +" TEXT)";
     public DBManager(@Nullable Context context) {
 
         super(context, DATABASE_NAME, null, VERSION);
@@ -43,7 +47,7 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLQuery);
-
+        db.execSQL(SQLQuery_tag);
     }
 
     @Override
@@ -61,6 +65,14 @@ public class DBManager extends SQLiteOpenHelper {
         contentValues.put(TAGNAME,note.getmTagName());
         contentValues.put(FAVORITE,note.getmFavorite());
         db.insert(TABLE_NAME,null,contentValues);
+        db.close();
+    }
+    public void addNotes_tag(classTag tag)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME,tag.getTagname());
+        db.insert(TABLE_NAME_TAG,null,contentValues);
         db.close();
     }
     public  void updateNotes(classNoteMain note)
@@ -118,6 +130,25 @@ public class DBManager extends SQLiteOpenHelper {
             while (cursor.moveToNext());
         }
         return classNoteMains;
+    }
+    public ArrayList<classTag> GetAllTag() {
+        ArrayList<classTag> alltag= new ArrayList<>();
+        String selectQuery= "SELECT * FROM "+ TABLE_NAME_TAG;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(selectQuery, null);
+        int i=0;
+        if (cursor.moveToFirst())
+        {
+            do {
+                classTag classTagg= new classTag();
+                classTagg.setTagname(cursor.getString(1));
+                classTagg.setId(i+"");
+                alltag.add(classTagg);
+                i++;
+            }
+            while (cursor.moveToNext());
+        }
+        return alltag;
     }
 
     public void Delete(String getmID) {

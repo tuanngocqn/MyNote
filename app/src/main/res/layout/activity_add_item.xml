@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="#ffffff"
     android:layout_height="match_parent"
-    tools:context=".view.add_item">
+    tools:context=".view.MainAddItem">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

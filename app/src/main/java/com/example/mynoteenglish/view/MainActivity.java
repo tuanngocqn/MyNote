@@ -22,7 +22,6 @@ import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.NoteMainAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -69,8 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_setting :
-                Toast.makeText(this, "SETING", Toast.LENGTH_SHORT).show();
+            case R.id.menu_management :
+                Intent intent= new Intent(MainActivity.this, Maintagchoose.class);
+                startActivity(intent);
                 break;
             case R.id.menu_find :
                 Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.fba_main:
-                Intent intent= new Intent(MainActivity.this,add_item.class);
+                Intent intent= new Intent(MainActivity.this, MainAddItem.class);
                 startActivity(intent);
                 break;
             default:
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((NoteMainAdapter) Objects.requireNonNull(recyclerViewMain.getAdapter())).SetOnItemListenerNoteMain(new OnlistenerNotes() {
             @Override
             public void OnItemClickNotes(View view, int position) {
-                Intent intent= new Intent(MainActivity.this,add_item.class);
+                Intent intent= new Intent(MainActivity.this, MainAddItem.class);
                 intent.putExtra(ITEM_SELECT,arrayList.get(position));
                 startActivity(intent);
             }

@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.tagnamecontrol"></activity>
-        <activity android:name=".view.add_item" />
+        <activity android:name=".view.Maintagchoose"></activity>
+        <activity android:name=".view.MainAddItem" />
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

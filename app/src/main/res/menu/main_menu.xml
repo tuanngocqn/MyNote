@@ -6,8 +6,8 @@
         android:icon="@drawable/ic_search_24px"
         android:orderInCategory="0"
         app:showAsAction="always"/>
-    <item  android:title="Setting"
+    <item  android:title="Tag management"
         android:icon="@drawable/ic_search_24px"
-        android:id="@+id/menu_setting"
+        android:id="@+id/menu_management"
         android:orderInCategory="1"/>
 </menu>
