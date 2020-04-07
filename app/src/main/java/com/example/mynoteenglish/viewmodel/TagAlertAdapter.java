@@ -48,7 +48,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
             tagHolder= (TagHolder) convertView.getTag();
         }
         tagHolder.textViewTagName.setText(classTags.get(position).getTagname());
-        tagHolder.textViewTagName.setOnLongClickListener(new View.OnLongClickListener() {
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 onlistenerTags.Onclicklongtag(v,position);

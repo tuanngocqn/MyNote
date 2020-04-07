@@ -52,6 +52,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     private void Initilize() {
         dbManager= new DBManager(this);
         classTags = new ArrayList<>();
+        builder=new AlertDialog.Builder(this);
     }
     private void Mapping() {
         fabTagchoose= findViewById(R.id.fbatag_choose);
@@ -83,34 +84,29 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
         toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
         tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags);
         listViewTagChoose.setAdapter(tagAlertAdapter);
-        listViewTagChoose.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Maintagchoose.this,String.valueOf(position) +"  "+ id,Toast.LENGTH_SHORT).show();
-                return true;
+            public void Onclicklongtag(View view, final int position) {
+                builder.setTitle("Do you want delete item ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dbManager.DeleteTag(classTags.get(position).getId());
+                                classTags.clear();
+                                classTags.addAll(dbManager.GetAllTag());
+                                tagAlertAdapter.notifyDataSetChanged();
+                                toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
             }
         });
-//        tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
-//            @Override
-//            public void Onclicklongtag(View view, final int position) {
-//                builder.setTitle("Do you want delete this item ?")
-//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dbManager.Delete(classTags.get(position).getId());
-//                                classTags.remove(position);
-//                                tagAlertAdapter.notifyDataSetChanged();
-//                            }
-//                        })
-//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//                builder.show();
-//            }
-//        });
     }
     private void viewListViewMain() {
 
@@ -140,6 +136,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                             editTextalertInput.setError("Your tag is exist!");
                             return;
                         }
+                        toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
                         ad.dismiss();
                         Toast.makeText(Maintagchoose.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
                     }
