@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -34,6 +35,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     ///
     Button buttonalertYes,buttonalertNo;
     EditText editTextalertInput;
+    TextView textViewTitle;
     ///
     TagAlertAdapter tagAlertAdapter;
     ArrayList<String> checkdulicate;
@@ -106,6 +108,46 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                         });
                 builder.show();
             }
+
+            @Override
+            public void Onclicktag(View view, final int position) {
+                View viewEdit = View.inflate(Maintagchoose.this, R.layout.alertaddtag, null);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(Maintagchoose.this);
+                alert.setView(viewEdit);
+                final AlertDialog ad= alert.show();
+                textViewTitle= viewEdit.findViewById(R.id.alert_Title);
+                textViewTitle.setText("Edit your tag");
+                buttonalertNo= viewEdit.findViewById(R.id.buttonalert_no);
+                buttonalertYes= viewEdit.findViewById(R.id.buttonalert_yes);
+                buttonalertYes.setText("Update");
+                editTextalertInput= viewEdit.findViewById(R.id.editextalert_input);
+                buttonalertYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String contentget= editTextalertInput.getText().toString();
+                        for(classTag d : classTags){
+                            if(d.getTagname() != null && d.getTagname().equals(contentget))
+                            {
+                                editTextalertInput.setError("Your tag is exist!");
+                                return;
+                            }
+                        }
+                        dbManager.updateNotesTag(new classTag(classTags.get(position).getId(),editTextalertInput.getText().toString()));
+                        classTags.clear();
+                        classTags.addAll(dbManager.GetAllTag()) ;
+                        tagAlertAdapter.notifyDataSetChanged();
+                        toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
+                        ad.dismiss();
+                        Toast.makeText(Maintagchoose.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                buttonalertNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ad.dismiss();
+                    }
+                });
+            }
         });
     }
     private void viewListViewMain() {
@@ -120,6 +162,8 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                 final AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setView(view);
                 final AlertDialog ad= alert.show();
+                textViewTitle= view.findViewById(R.id.alert_Title);
+                textViewTitle.setText("Add new your tag");
                 buttonalertNo= view.findViewById(R.id.buttonalert_no);
                 buttonalertYes= view.findViewById(R.id.buttonalert_yes);
                 editTextalertInput= view.findViewById(R.id.editextalert_input);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
             convertView= LayoutInflater.from(context).inflate(R.layout.layout_item_tag, parent, false);
             tagHolder= new TagHolder();
             tagHolder.textViewTagName= convertView.findViewById(R.id.textviewtag_name);
+            tagHolder.buttontagEdit= convertView.findViewById(R.id.buttontag_edit);
             convertView.setTag(tagHolder);
         }
         else
@@ -48,6 +50,12 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
             tagHolder= (TagHolder) convertView.getTag();
         }
         tagHolder.textViewTagName.setText(classTags.get(position).getTagname());
+        tagHolder.buttontagEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onlistenerTags.Onclicktag(v,position);
+            }
+        });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -62,6 +70,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
     public class TagHolder
     {
         TextView textViewTagName;
+        Button buttontagEdit;
     }
     public void SetOnItemListenerTag(OnlistenerTags onlistenerTags)
     {

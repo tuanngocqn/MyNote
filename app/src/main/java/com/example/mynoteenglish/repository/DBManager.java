@@ -90,6 +90,14 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
 
     }
+    public  void updateNotesTag(classTag note)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME,note.getTagname());
+        db.update(TABLE_NAME_TAG,contentValues,ID+"=?", new String[]{String.valueOf(note.getId())});
+        db.close();
+    }
     public int
     GetID(classNoteMain noteMain)
     {
