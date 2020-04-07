@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerTags;
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.model.classTag;
 import com.example.mynoteenglish.repository.DBManager;
@@ -160,6 +163,23 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
              }
          });
          editName.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+             }
+
+             @Override
+             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                 menuSave= menuAdd.getItem(0);
+                 status_save_monitor();
+             }
+
+             @Override
+             public void afterTextChanged(Editable s) {
+
+             }
+         });
+         buttonTag.addTextChangedListener(new TextWatcher() {
              @Override
              public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -473,20 +493,43 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
 //                listView.setAdapter(tagAlertAdapter);
 //                alert.setView(view);
 //                alert.show();
-//                tagAlertAdapter=new TagAlertAdapter(add_item.this,R.layout.layout_item_tag,classTags);
-//                AlertDialog.Builder builder = new AlertDialog.Builder(add_item.this);
-//
-//                builder.setTitle("title");
-//
-//                builder.setAdapter(tagAlertAdapter, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // ---
-//                    }
-//
-//                });
-//
-//              AlertDialog aler=   builder.create();
-//                aler.show();
+                classTags.clear();
+                Context context;
+                classTags.addAll(dbManager.GetAllTag()) ;
+                tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainAddItem.this);
+                builder.setTitle("List all tag");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setAdapter(tagAlertAdapter, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+  //                      Toast.makeText(MainAddItem.this,"hello",Toast.LENGTH_SHORT).show();
+                        // ---
+                    }
+
+                });
+                tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
+                    @Override
+                    public void Onclicklongtag(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void Onclicktag(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void Onclickshorttag(View view, int position) {
+                        buttonTag.setText(classTags.get(position).getTagname());
+
+                    }
+                });
+                builder.show();
                 break;
             default:
                 break;

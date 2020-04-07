@@ -68,6 +68,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
         toolbarTagChoose.setTitle("List your Tag");
     }
 
+
     private void SetEventOnclick() {
         fabTagchoose.setOnClickListener(this);
         toolbarTagChoose.setNavigationOnClickListener(new View.OnClickListener() {
@@ -148,6 +149,11 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                         ad.dismiss();
                     }
                 });
+            }
+
+            @Override
+            public void Onclickshorttag(View view, int position) {
+
             }
         });
     }

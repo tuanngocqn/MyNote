@@ -63,6 +63,13 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
                 return true;
             }
         });
+        convertView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   onlistenerTags.Onclickshorttag(v,position);
+               }
+           }
+        );
         return  convertView;
     }
 
