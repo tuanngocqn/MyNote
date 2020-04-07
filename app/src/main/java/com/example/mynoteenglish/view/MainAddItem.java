@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
@@ -46,6 +47,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     Menu menuAdd;
     classNoteMain classNoteMain,ObjectIntent;
     MenuItem menuSave,menuFavorite;
+    TextView textViewTitle;
     final String[] arrayLang=  {"ENGLISH","TIẾNG VIỆT"};
     final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
     List<String> listtag;
@@ -300,6 +302,8 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 final AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setView(view);
                 final AlertDialog ad= alert.show();
+                textViewTitle= view.findViewById(R.id.alert_Title);
+                textViewTitle.setText("Add new your tag");
                 buttonalertNo= view.findViewById(R.id.buttonalert_no);
                 buttonalertYes= view.findViewById(R.id.buttonalert_yes);
                 editTextalertInput= view.findViewById(R.id.editextalert_input);
