@@ -206,6 +206,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                      dialog.dismiss();
                      Intent intent= new Intent(MainAddItem.this,MainActivity.class);
                      startActivity(intent);
+                     finish();
                  }
              });
              builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -213,7 +214,8 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                  public void onClick(DialogInterface dialog, int which) {
                          dialog.dismiss();
                      Intent intent= new Intent(MainAddItem.this,MainActivity.class);
-                         startActivity(intent);
+                     startActivity(intent);
+                     finish();
                  }
              });
              builder.setNeutralButton("Canel", new DialogInterface.OnClickListener() {
@@ -229,6 +231,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
          {
              Intent intent= new Intent(MainAddItem.this,MainActivity.class);
              startActivity(intent);
+             finish();
          }
      }
     @Override
@@ -303,7 +306,15 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 buttonalertYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int checduplicate= dbManager.GetAllTag().size();
                         dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
+                        classTags.clear();
+                        classTags.addAll(dbManager.GetAllTag()) ;
+                        if ( checduplicate==classTags.size())
+                        {
+                            editTextalertInput.setError("Your tag is exist!");
+                            return;
+                        }
                         ad.dismiss();
                         Toast.makeText(MainAddItem.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
                     }

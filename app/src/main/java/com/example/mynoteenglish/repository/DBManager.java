@@ -38,7 +38,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     private String SQLQuery_tag= "CREATE TABLE " +TABLE_NAME_TAG+" ("+
             ID+ " integer primary key, "+
-            NAME +" TEXT)";
+            NAME +" TEXT UNIQUE)";
     public DBManager(@Nullable Context context) {
 
         super(context, DATABASE_NAME, null, VERSION);
@@ -67,13 +67,14 @@ public class DBManager extends SQLiteOpenHelper {
         db.insert(TABLE_NAME,null,contentValues);
         db.close();
     }
-    public void addNotes_tag(classTag tag)
-    {
-        SQLiteDatabase db= this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME,tag.getTagname());
-        db.insert(TABLE_NAME_TAG,null,contentValues);
-        db.close();
+    public boolean addNotes_tag(classTag tag)
+     {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME, tag.getTagname());
+            db.insert(TABLE_NAME_TAG, null, contentValues);
+            db.close();
+            return  true;
     }
     public  void updateNotes(classNoteMain note)
     {
@@ -136,15 +137,13 @@ public class DBManager extends SQLiteOpenHelper {
         String selectQuery= "SELECT * FROM "+ TABLE_NAME_TAG;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor= db.rawQuery(selectQuery, null);
-        int i=0;
         if (cursor.moveToFirst())
         {
             do {
                 classTag classTagg= new classTag();
                 classTagg.setTagname(cursor.getString(1));
-                classTagg.setId(i+"");
+                classTagg.setId(cursor.getString(0));
                 alltag.add(classTagg);
-                i++;
             }
             while (cursor.moveToNext());
         }
@@ -154,5 +153,9 @@ public class DBManager extends SQLiteOpenHelper {
     public void Delete(String getmID) {
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME,ID+" =?",new String[]{getmID});
+    }
+    public void DeleteTag(String getmID) {
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME_TAG,ID+" =?",new String[]{getmID});
     }
 }

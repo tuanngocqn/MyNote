@@ -12,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerNotes;
+import com.example.mynoteenglish.model.OnlistenerTags;
 import com.example.mynoteenglish.model.classTag;
+import com.example.mynoteenglish.repository.DBManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 public class TagAlertAdapter extends ArrayAdapter<classTag> {
     private int resoure;
     private ArrayList<classTag> classTags= new ArrayList<>();
+    OnlistenerTags onlistenerTags;
     private Context context;
     public TagAlertAdapter(@NonNull Context context, int resource, @NonNull ArrayList<classTag> objects) {
         super(context, resource, objects);
@@ -30,7 +34,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TagHolder tagHolder;
         if (convertView==null)
         {
@@ -44,9 +48,13 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
             tagHolder= (TagHolder) convertView.getTag();
         }
         tagHolder.textViewTagName.setText(classTags.get(position).getTagname());
-//        TextView textView= convertView.findViewById(R.id.textviewtag_name);
-//        textView.setText(classTags.get(position).getTagname());
-//        Log.d("tuanngoc",(position+1)+"");
+        tagHolder.textViewTagName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onlistenerTags.Onclicklongtag(v,position);
+                return true;
+            }
+        });
         return  convertView;
     }
 
@@ -54,5 +62,9 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
     public class TagHolder
     {
         TextView textViewTagName;
+    }
+    public void SetOnItemListenerTag(OnlistenerTags onlistenerTags)
+    {
+        this.onlistenerTags= onlistenerTags;
     }
 }

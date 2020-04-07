@@ -11,7 +11,7 @@
         android:layout_alignParentStart="true"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/ic_lens_yellow_24dp" />
+        android:background="@drawable/ic_turned_in_not_orange_24dp" />
 
     <TextView
         android:padding="20dp"

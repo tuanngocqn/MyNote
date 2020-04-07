@@ -1,9 +1,11 @@
 package com.example.mynoteenglish.view;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -13,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerTags;
 import com.example.mynoteenglish.model.classTag;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.TagAlertAdapter;
@@ -25,6 +28,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     FloatingActionButton fabTagchoose;
     ListView listViewTagChoose;
     DBManager dbManager;
+    AlertDialog.Builder builder;
     Toolbar toolbarTagChoose;
     ArrayList<classTag> classTags ;
     ///
@@ -32,6 +36,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     EditText editTextalertInput;
     ///
     TagAlertAdapter tagAlertAdapter;
+    ArrayList<String> checkdulicate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +52,6 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     private void Initilize() {
         dbManager= new DBManager(this);
         classTags = new ArrayList<>();
-
-
     }
     private void Mapping() {
         fabTagchoose= findViewById(R.id.fbatag_choose);
@@ -69,8 +72,10 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 Intent intent= new Intent(Maintagchoose.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
+
     }
     private  void ChooseRun()
     {
@@ -78,6 +83,34 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
         toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
         tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags);
         listViewTagChoose.setAdapter(tagAlertAdapter);
+        listViewTagChoose.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(Maintagchoose.this,String.valueOf(position) +"  "+ id,Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+//        tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
+//            @Override
+//            public void Onclicklongtag(View view, final int position) {
+//                builder.setTitle("Do you want delete this item ?")
+//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dbManager.Delete(classTags.get(position).getId());
+//                                classTags.remove(position);
+//                                tagAlertAdapter.notifyDataSetChanged();
+//                            }
+//                        })
+//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                builder.show();
+//            }
+//        });
     }
     private void viewListViewMain() {
 
@@ -97,10 +130,16 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                 buttonalertYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int checduplicate= classTags.size();
                         dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
                         classTags.clear();
-                       classTags.addAll(dbManager.GetAllTag()) ;
+                        classTags.addAll(dbManager.GetAllTag()) ;
                         tagAlertAdapter.notifyDataSetChanged();
+                        if ( checduplicate==classTags.size())
+                        {
+                            editTextalertInput.setError("Your tag is exist!");
+                            return;
+                        }
                         ad.dismiss();
                         Toast.makeText(Maintagchoose.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
                     }
