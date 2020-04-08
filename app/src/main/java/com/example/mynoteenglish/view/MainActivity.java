@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AlertDialog.Builder builder;
     Menu menu;
     MenuItem menuFind;
+    EditText editTextFind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerViewMain= findViewById(R.id.recyclerview_Main);
         textViewSumnotes= findViewById(R.id.textview_sumnotes);
         textViewTagNotes= findViewById(R.id.textview_tagnote);
+        editTextFind= findViewById(R.id.edit_Find);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.menu_find :
-                Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
-
+             //   Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
+              editTextFind.setVisibility(View.VISIBLE);
+              editTextFind.requestFocus();
                 break;
         }
         return super.onOptionsItemSelected(item);

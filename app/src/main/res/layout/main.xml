@@ -14,12 +14,14 @@
              android:layout_height="?attr/actionBarSize"
              android:background="#FFEB3B"
              app:titleTextColor="#ffff" >
+
              <com.google.android.material.textfield.TextInputEditText
                  android:id="@+id/edit_Find"
-                 android:background="@drawable/outline_button"
                  android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@drawable/outline_button"
                  android:paddingLeft="10dp"
-                 android:layout_height="wrap_content" />
+                 android:visibility="invisible" />
          </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
    <LinearLayout
