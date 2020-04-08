@@ -25,12 +25,14 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
     private int resoure;
     private ArrayList<classTag> classTags= new ArrayList<>();
     OnlistenerTags onlistenerTags;
+    Boolean hide=false;
     private Context context;
-    public TagAlertAdapter(@NonNull Context context, int resource, @NonNull ArrayList<classTag> objects) {
+    public TagAlertAdapter(@NonNull Context context, int resource, @NonNull ArrayList<classTag> objects,@Nullable  boolean hide) {
         super(context, resource, objects);
         this.classTags= objects;
         this.context= context;
         this.resoure= resource;
+        this.hide=hide;
     }
 
     @NonNull
@@ -70,6 +72,10 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
                }
            }
         );
+        if (hide)
+        {
+            tagHolder.buttontagEdit.setVisibility(View.INVISIBLE);
+        }
         return  convertView;
     }
 

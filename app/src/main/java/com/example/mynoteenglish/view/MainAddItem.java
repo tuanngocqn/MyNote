@@ -451,52 +451,12 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 builder.show();
                 break;
             case R.id.fba_add:
-//                View view = View.inflate(this, R.layout.alertaddtag, null);
-//                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//                alert.setView(view);
-//                buttonalertNo= view.findViewById(R.id.buttonalert_no);
-//                buttonalertYes= view.findViewById(R.id.buttonalert_yes);
-//                editTextalertInput= view.findViewById(R.id.editextalert_input);
-//                buttonalertYes.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(add_item.this,"Yes nhe",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                buttonalertNo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(add_item.this,"No nhe",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                alert.show();
                 break;
             case  R.id.button_Tag:
-              //  listtag= dbManager.GetAllTag();
-//                String[] temp= listtag.toArray(new String[0]);
-//                builder = new AlertDialog.Builder(add_item.this);
-//                builder.setTitle("Choose your language");
-//                builder.setItems(temp, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//                builder.show();
-//                View view = View.inflate(add_item.this,R.layout.alertchoosetag,null);
-//                LayoutInflater inflater = LayoutInflater.from(add_item.this);
-//                View view_adapter = inflater.inflate(R.layout.alertchoosetag,null);
-//                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//                classTags= dbManager.GetAllTag();
-//                tagAlertAdapter = new TagAlertAdapter(view_adapter.getContext(),R.layout.layout_item_tag,classTags);
-//                ListView listView= view.findViewById(R.id.listviewalert_choose);
-//                listView.setAdapter(tagAlertAdapter);
-//                alert.setView(view);
-//                alert.show();
                 classTags.clear();
                 Context context;
                 classTags.addAll(dbManager.GetAllTag()) ;
-                tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags);
+                tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,true);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainAddItem.this);
                 builder.setTitle("List all tag");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

@@ -85,7 +85,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     {
         classTags= dbManager.GetAllTag();
         toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
-        tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags);
+        tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags,false);
         listViewTagChoose.setAdapter(tagAlertAdapter);
         tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
             @Override
