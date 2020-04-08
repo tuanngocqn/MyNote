@@ -51,6 +51,14 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
         ChooseRun();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent= new Intent(Maintagchoose.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
+
     private void Initilize() {
         dbManager= new DBManager(this);
         classTags = new ArrayList<>();
@@ -178,6 +186,11 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onClick(View v) {
                         int checduplicate= classTags.size();
+                        if (editTextalertInput.getText().toString().trim().length()==0)
+                        {
+                            editTextalertInput.setError("Please input your tag!");
+                            return;
+                        }
                         dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
                         classTags.clear();
                         classTags.addAll(dbManager.GetAllTag()) ;

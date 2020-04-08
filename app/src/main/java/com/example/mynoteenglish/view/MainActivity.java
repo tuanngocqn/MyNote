@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NoteMainAdapter noteMainAdapter;
     DBManager dbManager;
     AlertDialog.Builder builder;
+    Menu menu;
+    MenuItem menuFind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.menu_management :
                 Intent intent= new Intent(MainActivity.this, Maintagchoose.class);
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void SetEventOnclick()
     {
         fabAdd.setOnClickListener(this);
+
+
     }
 
     private void DrawToolbar()
@@ -137,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void OnItemLongClickNotes(View view, final int position) {
-                builder.setTitle("Do you want delete this item ?")
+                builder.setTitle("Do you want delete item ?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

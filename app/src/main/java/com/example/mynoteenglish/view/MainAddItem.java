@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -291,6 +293,21 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
         isStatusSaved=true;
         menuSave.setIcon(R.drawable.ic_save_black_24dp);
     }
+
+    @Override
+    public void onBackPressed() {
+        Text2Speed.SetStop();
+        Checksavedata();
+        if (isStatusSaved)
+        {
+            return;
+        }
+        Intent intent= new Intent(MainAddItem.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item)
     {
@@ -330,6 +347,11 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 buttonalertYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (editTextalertInput.getText().toString().trim().length()==0)
+                        {
+                            editTextalertInput.setError("Please input your tag!");
+                            return;
+                        }
                         int checduplicate= dbManager.GetAllTag().size();
                         dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
                         classTags.clear();

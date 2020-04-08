@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@drawable/selectag"
     android:layout_height="match_parent">
 
     <ImageView
@@ -31,7 +32,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="20dp"
         android:background="#DDD9D9"
-        android:visibility="visible" />
+        android:visibility="invisible" />
     <Button
         android:id="@+id/buttontag_edit"
         android:layout_width="22dp"
