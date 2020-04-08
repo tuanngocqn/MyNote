@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+   <group android:checkableBehavior="single" android:visible="true">
+       <item
+
+           android:title="Home"
+           android:icon="@drawable/ic_home_love_svgrepo_com"
+           android:id="@+id/menuitem_home"/>
+       <item
+           android:title="Practise"
+           android:icon="@drawable/ic_intelligence_svgrepo_com"
+           android:id="@+id/menuitem_practise"/>
+       <item
+           android:title="Setting"
+           android:icon="@drawable/ic_settings_tools_and_utensils_svgrepo_com"
+           android:id="@+id/menuitem_setting"/>
+   </group>
+
+    <item android:title="Communicate">
+       <menu>
+           <item
+               android:title="Facebook"
+               android:icon="@drawable/ic_facebook_logo"
+               android:id="@+id/menuitem_facbook"/>
+           <item
+               android:title="Gmail"
+               android:icon="@drawable/ic_envelope"
+               android:id="@+id/menuitem_Gmail"/>
+       </menu>
+    </item>
+</menu>

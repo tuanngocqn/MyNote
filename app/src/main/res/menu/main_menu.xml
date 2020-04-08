@@ -6,8 +6,14 @@
         android:icon="@drawable/ic_search_24px"
         android:orderInCategory="0"
         app:showAsAction="always"/>
-    <item  android:title="Tag management"
-        android:icon="@drawable/ic_search_24px"
-        android:id="@+id/menu_management"
+    <item  android:title="Refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:id="@+id/menu_refresh"
+        app:showAsAction="always"
         android:orderInCategory="1"/>
+    <item  android:title="Tag management"
+        android:icon="@drawable/ic_collections_bookmark_black_24dp"
+        android:id="@+id/menu_management"
+        app:showAsAction="always"
+        android:orderInCategory="2"/>
 </menu>

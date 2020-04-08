@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -23,6 +25,7 @@ import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.NoteMainAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Menu menu;
     MenuItem menuFind;
     EditText editTextFind;
+    //add nagigation
+    DrawerLayout drawerLayoutMain;
+    NavigationView navigationViewMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected  void Mapping ()
     {
         fabAdd = findViewById(R.id.fba_main);
+        drawerLayoutMain= findViewById(R.id.drawerLayout_navigation);
+        navigationViewMain= findViewById(R.id.navigation_Main);
         toolbarMain= findViewById(R.id.toolbar_main);
         recyclerViewMain= findViewById(R.id.recyclerview_Main);
         textViewSumnotes= findViewById(R.id.textview_sumnotes);
@@ -97,6 +105,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else { textViewSumnotes.setText("0 Notes");}
                 noteMainAdapter.notifyDataSetChanged();
                 break;
+            case R.id.menu_refresh:
+                arrayList.clear();
+                arrayList.addAll(dbManager.GetAllNote());
+                if (arrayList!=null)
+                {
+                    textViewSumnotes.setText(arrayList.size() + " Notes");
+                }
+                else { textViewSumnotes.setText("0 Notes");}
+                noteMainAdapter.notifyDataSetChanged();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -113,7 +131,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbarMain);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbarMain.setNavigationIcon(R.drawable.ic_home_24px);
+        toolbarMain.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        toolbarMain.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayoutMain.openDrawer(Gravity.LEFT);
+            }
+        });
+        navigationViewMain.setItemIconTintList(null);
     }
     @Override
     public void onClick(View v) {
