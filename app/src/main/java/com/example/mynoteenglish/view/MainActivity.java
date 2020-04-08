@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -81,8 +82,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.menu_find :
              //   Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
-              editTextFind.setVisibility(View.VISIBLE);
-              editTextFind.requestFocus();
+                editTextFind.setVisibility(View.VISIBLE);
+                editTextFind.requestFocus();
+                if (editTextFind.getText().toString().length()==0)
+                {
+                    return true;
+                }
+                arrayList.clear();
+                arrayList.addAll(dbManager.GetAllNote_Search(editTextFind.getText().toString()));
+                if (arrayList!=null)
+                {
+                    textViewSumnotes.setText(arrayList.size() + " Notes");
+                }
+                else { textViewSumnotes.setText("0 Notes");}
+                noteMainAdapter.notifyDataSetChanged();
                 break;
         }
         return super.onOptionsItemSelected(item);
