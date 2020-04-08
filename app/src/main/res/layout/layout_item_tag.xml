@@ -14,15 +14,24 @@
         android:background="@drawable/ic_turned_in_not_orange_24dp" />
 
     <TextView
-        android:padding="20dp"
-        android:id="@+id/textviewtag_name"
-        android:layout_toRightOf="@id/imageview_tag"
-        android:layout_centerInParent="true"
-        android:text= "Name of tag"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:padding="20dp"
+    android:id="@+id/textviewtag_name"
+    android:layout_toRightOf="@id/imageview_tag"
+    android:layout_centerInParent="true"
+    android:text= "Name of tag"
+    android:textSize="20sp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
+    <View
+        android:id="@+id/viewtag_devideline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/textviewtag_name"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="#DDD9D9"
+        android:visibility="visible" />
     <Button
         android:id="@+id/buttontag_edit"
         android:layout_width="22dp"

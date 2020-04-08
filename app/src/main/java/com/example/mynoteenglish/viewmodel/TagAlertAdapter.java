@@ -45,6 +45,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
             tagHolder= new TagHolder();
             tagHolder.textViewTagName= convertView.findViewById(R.id.textviewtag_name);
             tagHolder.buttontagEdit= convertView.findViewById(R.id.buttontag_edit);
+            tagHolder.viewtagDevideline= convertView.findViewById(R.id.viewtag_devideline);
             convertView.setTag(tagHolder);
         }
         else
@@ -69,12 +70,15 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
                @Override
                public void onClick(View v) {
                    onlistenerTags.Onclickshorttag(v,position);
+
                }
            }
         );
         if (hide)
         {
             tagHolder.buttontagEdit.setVisibility(View.INVISIBLE);
+            tagHolder.viewtagDevideline.setVisibility(View.VISIBLE);
+
         }
         return  convertView;
     }
@@ -84,6 +88,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
     {
         TextView textViewTagName;
         Button buttontagEdit;
+        View viewtagDevideline;
     }
     public void SetOnItemListenerTag(OnlistenerTags onlistenerTags)
     {
