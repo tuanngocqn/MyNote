@@ -44,6 +44,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     DBManager dbManager;
     LibTextToSpeedCompleted Text2Speed;
     Toolbar toolbarAdd;
+    String id_tag ="-1";
     EditText edittextTextInput,editName;
     Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
     Button buttonalertYes,buttonalertNo;
@@ -126,9 +127,11 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 statusLike=true;
                 menuFavorite.setIcon(R.drawable.ic_favorite_red_24dp);
         }
+        id_tag= classNoteMain.getmTagName();
         editName.setText(classNoteMain.getmName());
         edittextTextInput.setText(classNoteMain.getmContent());
-        buttonTag.setText(classNoteMain.getmTagName());
+      //  buttonTag.setText(classNoteMain.getmTagName());
+        buttonTag.setText(dbManager.GetNameTagbyID(id_tag));
         menuSave.setIcon(R.drawable.ic_save_gray_24dp);
         isStatusSaved=false;
     }
@@ -344,6 +347,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 buttonalertNo= view.findViewById(R.id.buttonalert_no);
                 buttonalertYes= view.findViewById(R.id.buttonalert_yes);
                 editTextalertInput= view.findViewById(R.id.editextalert_input);
+                editTextalertInput.requestFocus();
                 buttonalertYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -386,7 +390,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
          SimpleDateFormat dateFormat= new SimpleDateFormat("dd MM,yyyy");
          String datecreate= dateFormat.format(new Date());
          String dateupdate= dateFormat.format(new Date());
-         String tagname= buttonTag.getText().toString();
+         String tagname= "-1";
          String favorite= (statusLike==true)?"true":"false";
          return  new classNoteMain(name,content,datecreate,dateupdate,tagname,favorite);
 
@@ -398,7 +402,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
          SimpleDateFormat dateFormat= new SimpleDateFormat("dd MM,yyyy");
          String datecreate= ObjectIntent.getmDateCreate();
          String dateupdate= dateFormat.format(new Date());
-         String tagname= buttonTag.getText().toString();
+         String tagname= id_tag;
          String favorite= (statusLike==true)?"true":"false";
          return  new classNoteMain(id,name,content,datecreate,dateupdate,tagname,favorite);
 
@@ -477,6 +481,8 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
             case  R.id.button_Tag:
                 classTags.clear();
                 Context context;
+
+                classTags.add(new classTag("-1","No Tag"));
                 classTags.addAll(dbManager.GetAllTag()) ;
                 tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,true);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainAddItem.this);
@@ -484,7 +490,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
                 builder.setAdapter(tagAlertAdapter, new DialogInterface.OnClickListener() {
@@ -508,7 +513,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                     @Override
                     public void Onclickshorttag(View view, int position) {
                         buttonTag.setText(classTags.get(position).getTagname());
-
+                        id_tag=   classTags.get(position).getId();
                     }
                 });
                 builder.show();

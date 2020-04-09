@@ -131,6 +131,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                 buttonalertYes.setText("Update");
                 editTextalertInput= viewEdit.findViewById(R.id.editextalert_input);
                 editTextalertInput.setText(classTags.get(position).getTagname());
+                editTextalertInput.requestFocus();
                 buttonalertYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

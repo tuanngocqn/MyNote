@@ -90,6 +90,14 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
 
     }
+    public void UpdateChooseTag(String idnotes,String idTag)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TAGNAME,idTag);
+        db.update(TABLE_NAME,contentValues,ID+"=?", new String[]{idnotes});
+        db.close();
+    }
     public  void updateNotesTag(classTag note)
     {
         SQLiteDatabase db= this.getWritableDatabase();
@@ -98,8 +106,8 @@ public class DBManager extends SQLiteOpenHelper {
         db.update(TABLE_NAME_TAG,contentValues,ID+"=?", new String[]{String.valueOf(note.getId())});
         db.close();
     }
-    public int
-    GetID(classNoteMain noteMain)
+
+    public int GetID(classNoteMain noteMain)
     {
         int id=-1;
         String selectQuery="SELECT * from "+ TABLE_NAME + " WHERE "+ NAME + " = ?"+" AND "+
@@ -181,6 +189,21 @@ public class DBManager extends SQLiteOpenHelper {
             while (cursor.moveToNext());
         }
         return alltag;
+    }
+    public String GetNameTagbyID(String id) {
+        String nametag= "";
+        String selectQuery="SELECT * from "+ TABLE_NAME_TAG + " WHERE "+
+                ID + " =?";
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,new String[]{id});
+        if (cursor.moveToFirst())
+        {
+            do {
+                nametag=cursor.getString(1);
+            }
+            while (cursor.moveToNext());
+        }
+        return nametag ;
     }
 
     public void Delete(String getmID) {
