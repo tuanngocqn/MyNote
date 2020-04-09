@@ -13,7 +13,7 @@
             android:id="@+id/toolbar_add"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFEB3B" />
+            android:background="@drawable/hinhtoobar" />
     </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fba_add"

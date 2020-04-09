@@ -6,32 +6,23 @@
     android:gravity="center"
     android:background="@color/orangnote"
     android:layout_height="match_parent">
-  <View
-      android:background="#070707"
-      android:layout_width="match_parent"
-      android:layout_height="10dp"/>
       <LinearLayout
           android:weightSum="10"
           android:gravity="center"
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
-          <ImageView
-              android:id="@+id/imageicon"
-              android:layout_width="38dp"
-              android:layout_height="67dp"
-              android:layout_margin="10dp"
-              android:layout_weight="1"
-              android:src="@drawable/ic_library_books_black_24dp" />
-          <TextView
 
+          <TextView
+              android:background="@drawable/hinhtoobar"
               android:textStyle="bold"
-              android:textColor="#090909"
+              android:paddingTop="20dp"
+              android:paddingLeft="10dp"
+              android:textColor="#050505"
               android:textSize="50dp"
               android:text="NOTE ENG"
-              android:layout_weight="9"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"/>
+              android:layout_width="match_parent"
+              android:layout_height="100dp"/>
       </LinearLayout>
 
 
