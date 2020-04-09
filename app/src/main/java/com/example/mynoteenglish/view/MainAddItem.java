@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +14,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +60,9 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     int indexLang=0;
     ArrayList<classTag> classTags ;
     TagAlertAdapter tagAlertAdapter;
+    ///get text from editext after selected
+    public int start=0;
+    public int end= 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,8 +203,19 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
 
              }
          });
+         edittextTextInput.setOnTouchListener(new View.OnTouchListener() {
+             @Override
+             public boolean onTouch(View v, MotionEvent event) {
+                 start= edittextTextInput.getSelectionStart();
+                 end= edittextTextInput.getSelectionEnd();
+                 Toast.makeText(MainAddItem.this,"MotionEvent "+ event.getAction()+", "+ edittextTextInput.getSelectionStart()+", "+edittextTextInput.getSelectionEnd(),Toast.LENGTH_SHORT).show();
+                 return false;
+             }
+         });
+
 
      }
+
      private  void SaveUpdated()
      {
          if (ObjectIntent!=null)
@@ -477,6 +490,10 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 builder.show();
                 break;
             case R.id.fba_add:
+                if ((end- start)>0) {
+                    String textgeted = edittextTextInput.getText().toString().substring(start,end);
+                    Toast.makeText(MainAddItem.this,textgeted,Toast.LENGTH_SHORT).show();
+                }
                 break;
             case  R.id.button_Tag:
                 classTags.clear();
@@ -522,4 +539,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
+
 }
