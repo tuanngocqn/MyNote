@@ -9,7 +9,7 @@
   <View
       android:background="#070707"
       android:layout_width="match_parent"
-      android:layout_height="1dp"/>
+      android:layout_height="10dp"/>
       <LinearLayout
           android:weightSum="10"
           android:gravity="center"
@@ -24,8 +24,9 @@
               android:layout_weight="1"
               android:src="@drawable/ic_library_books_black_24dp" />
           <TextView
+
               android:textStyle="bold"
-              android:textColor="#FDFDFA"
+              android:textColor="#090909"
               android:textSize="50dp"
               android:text="NOTE ENG"
               android:layout_weight="9"
