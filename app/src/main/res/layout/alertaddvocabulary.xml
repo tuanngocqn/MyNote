@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/texviewvocab_title"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:height="?attr/actionBarSize"
+        android:background="@drawable/hinhtoobar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingTop="12dp"
+        android:textAlignment="center"
+        android:text="" />
+   <LinearLayout
+       android:padding="15dp"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <TextView
+           android:textSize="15dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Enter your vocabulary :"
+           android:layout_marginLeft="5dp"
+           android:textAppearance="?android:attr/textAppearanceSmall"/>
+       <com.google.android.material.textfield.TextInputLayout
+           android:paddingTop="5dp"
+           app:endIconMode="clear_text"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <com.google.android.material.textfield.TextInputEditText
+               android:id="@+id/editextvocab_input"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </com.google.android.material.textfield.TextInputLayout>
+       <TextView
+           android:textSize="15dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Enter your detail"
+           android:layout_marginLeft="5dp"
+           android:textAppearance="?android:attr/textAppearanceSmall"/>
+       <com.google.android.material.textfield.TextInputLayout
+           android:paddingTop="5dp"
+           android:id="@+id/textviewalert_name"
+           app:endIconMode="clear_text"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <com.google.android.material.textfield.TextInputEditText
+               android:id="@+id/editextvocab_inputdetail"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </com.google.android.material.textfield.TextInputLayout>
+       <RelativeLayout
+           android:layout_marginTop="20dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <Button
+               android:id="@+id/buttonvocab_no"
+               android:textSize="20dp"
+               android:textColor="#ffffff"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="@drawable/button_alert_presse_no"
+               android:text="NO" />
+
+           <Button
+               android:id="@+id/buttonvocab_yes"
+               android:textSize="20dp"
+               android:textColor="#ffffff"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentEnd="true"
+               android:background="@drawable/button_alert_presse_yes"
+               android:text="YES" />
+       </RelativeLayout>
+   </LinearLayout>
+</LinearLayout>

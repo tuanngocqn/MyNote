@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
 import com.example.mynoteenglish.model.OnlistenerTags;
+import com.example.mynoteenglish.model.OnselectchangeEdit;
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.model.classTag;
 import com.example.mynoteenglish.repository.DBManager;
+import com.example.mynoteenglish.viewmodel.EditTextCursorWatcher;
 import com.example.mynoteenglish.viewmodel.LibTextToSpeedCompleted;
 import com.example.mynoteenglish.viewmodel.TagAlertAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,7 +46,8 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     LibTextToSpeedCompleted Text2Speed;
     Toolbar toolbarAdd;
     String id_tag ="-1";
-    EditText edittextTextInput,editName;
+    EditText edittextTextInput;
+    EditText  editName;
     Button buttonTag,buttonSpeed,buttonLanguage,buttonPlay,buttonRepeat;
     Button buttonalertYes,buttonalertNo;
     EditText editTextalertInput;
@@ -61,8 +64,11 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     ArrayList<classTag> classTags ;
     TagAlertAdapter tagAlertAdapter;
     ///get text from editext after selected
-    public int start=0;
-    public int end= 0;
+    public static int startSelectText=0;
+    public static int endSelectText= 0;
+    Button buttonVocabYes,buttonVocabNo;
+    EditText editTextVocabInput,editTextVocabDetail;
+    TextView textViewVocabTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,16 +209,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
 
              }
          });
-         edittextTextInput.setOnTouchListener(new View.OnTouchListener() {
-             @Override
-             public boolean onTouch(View v, MotionEvent event) {
-                 start= edittextTextInput.getSelectionStart();
-                 end= edittextTextInput.getSelectionEnd();
-                 Toast.makeText(MainAddItem.this,"MotionEvent "+ event.getAction()+", "+ edittextTextInput.getSelectionStart()+", "+edittextTextInput.getSelectionEnd(),Toast.LENGTH_SHORT).show();
-                 return false;
-             }
-         });
-
 
      }
 
@@ -490,9 +486,48 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 builder.show();
                 break;
             case R.id.fba_add:
-                if ((end- start)>0) {
-                    String textgeted = edittextTextInput.getText().toString().substring(start,end);
-                    Toast.makeText(MainAddItem.this,textgeted,Toast.LENGTH_SHORT).show();
+                if ((endSelectText- startSelectText)>0) {
+                    String textgeted = edittextTextInput.getText().toString().substring(startSelectText,endSelectText);
+                    View view = View.inflate(this, R.layout.alertaddvocabulary, null);
+                    final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setView(view);
+                    final AlertDialog ad= alert.show();
+                    textViewVocabTitle= view.findViewById(R.id.texviewvocab_title);
+                    textViewVocabTitle.setText("Add new vocabulary");
+                    buttonVocabNo= view.findViewById(R.id.buttonvocab_no);
+                    buttonVocabYes= view.findViewById(R.id.buttonvocab_yes);
+                    editTextVocabInput= view.findViewById(R.id.editextvocab_input);
+                    editTextVocabInput.setText(textgeted);
+                    editTextVocabDetail= view.findViewById(R.id.editextvocab_inputdetail);
+                    editTextVocabDetail.requestFocus();
+                    buttonVocabYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            if (editTextalertInput.getText().toString().trim().length()==0)
+//                            {
+//                                editTextalertInput.setError("Please input your tag!");
+//                                return;
+//                            }
+//                            int checduplicate= dbManager.GetAllTag().size();
+//                            dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
+//                            classTags.clear();
+//                            classTags.addAll(dbManager.GetAllTag()) ;
+//                            if ( checduplicate==classTags.size())
+//                            {
+//                                editTextalertInput.setError("Your tag is exist!");
+//                                return;
+//                            }
+//                            ad.dismiss();
+//                            Toast.makeText(MainAddItem.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    buttonVocabNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ad.dismiss();
+
+                        }
+                    });
                 }
                 break;
             case  R.id.button_Tag:

@@ -9,7 +9,6 @@ import com.example.mynoteenglish.model.OnselectchangeEdit;
 import com.example.mynoteenglish.view.MainAddItem;
 
 public class EditTextCursorWatcher extends androidx.appcompat.widget.AppCompatEditText {
-    OnselectchangeEdit onSelectionChanged;
     public EditTextCursorWatcher(Context context) {
         super(context);
 
@@ -24,12 +23,8 @@ public class EditTextCursorWatcher extends androidx.appcompat.widget.AppCompatEd
     }
     @Override
     protected void onSelectionChanged(int selStart, int selEnd) {
-      //  Toast.makeText(getContext(), "selStart is " + selStart + "selEnd is " + selEnd, Toast.LENGTH_LONG).show();
-        onSelectionChanged.Getstartend(selStart,selEnd);
-    }
-    public void getStartEnd( OnselectchangeEdit onselectchangeEdit)
-    {
-        this.onSelectionChanged= onselectchangeEdit;
+        MainAddItem.startSelectText=selStart;
+        MainAddItem.endSelectText= selEnd;
     }
 
 }
