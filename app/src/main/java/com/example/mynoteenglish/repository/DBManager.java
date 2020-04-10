@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.model.classTag;
+import com.example.mynoteenglish.model.classVocabulary;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,9 @@ public class DBManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="notes_manager";
     private static final String TABLE_NAME="notes_table";
     private static final String TABLE_NAME_TAG= "tag_table";
+    private static final String TABLE_NAME_VOCABULARY= "vocabulary_table";
     private static final String ID="id";
+    private static final String IDNOTE="idnote";
     private static final String NAME="name";
     private static final String CONTENT="content";
     private static final String DATECREATE="datecreate";
@@ -39,6 +42,11 @@ public class DBManager extends SQLiteOpenHelper {
     private String SQLQuery_tag= "CREATE TABLE " +TABLE_NAME_TAG+" ("+
             ID+ " integer primary key, "+
             NAME +" TEXT UNIQUE)";
+    private String SQLQuery_vocabulary= "CREATE TABLE " +TABLE_NAME_VOCABULARY+" ("+
+            ID+ " integer primary key, "+
+            IDNOTE +" integer, "+
+            NAME +" TEXT, "+
+            CONTENT +" TEXT)";
     public DBManager(@Nullable Context context) {
 
         super(context, DATABASE_NAME, null, VERSION);
@@ -48,6 +56,7 @@ public class DBManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLQuery);
         db.execSQL(SQLQuery_tag);
+        db.execSQL(SQLQuery_vocabulary);
     }
 
     @Override
@@ -214,4 +223,30 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME_TAG,ID+" =?",new String[]{getmID});
     }
+    //////vocabulary
+    public void addVocabulary(classVocabulary vocabulary)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(IDNOTE,vocabulary.getIdnote());
+        contentValues.put(NAME,vocabulary.getName());
+        contentValues.put(CONTENT,vocabulary.getContent());
+        db.insert(TABLE_NAME_VOCABULARY,null,contentValues);
+        db.close();
+    }
+    public void DeleteVocabulary(String getmID) {
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME_VOCABULARY,ID+" =?",new String[]{getmID});
+    }
+    public  void updateVocabulary(classVocabulary vocabulary)
+    {
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(IDNOTE,vocabulary.getIdnote());
+        contentValues.put(NAME,vocabulary.getName());
+        contentValues.put(CONTENT,vocabulary.getContent());
+        db.update(TABLE_NAME_VOCABULARY,contentValues,ID+"=?", new String[]{String.valueOf(vocabulary.getId())});
+        db.close();
+    }
+
 }

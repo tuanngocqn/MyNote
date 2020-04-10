@@ -27,6 +27,7 @@ import com.example.mynoteenglish.model.OnlistenerTags;
 import com.example.mynoteenglish.model.OnselectchangeEdit;
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.model.classTag;
+import com.example.mynoteenglish.model.classVocabulary;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.EditTextCursorWatcher;
 import com.example.mynoteenglish.viewmodel.LibTextToSpeedCompleted;
@@ -486,6 +487,12 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 builder.show();
                 break;
             case R.id.fba_add:
+                if (ObjectIntent==null)
+                {
+                    Toast.makeText(MainAddItem.this,"Please save this note!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if ((endSelectText- startSelectText)>0) {
                     String textgeted = edittextTextInput.getText().toString().substring(startSelectText,endSelectText);
                     View view = View.inflate(this, R.layout.alertaddvocabulary, null);
@@ -503,22 +510,9 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                     buttonVocabYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            if (editTextalertInput.getText().toString().trim().length()==0)
-//                            {
-//                                editTextalertInput.setError("Please input your tag!");
-//                                return;
-//                            }
-//                            int checduplicate= dbManager.GetAllTag().size();
-//                            dbManager.addNotes_tag(new classTag(editTextalertInput.getText().toString()));
-//                            classTags.clear();
-//                            classTags.addAll(dbManager.GetAllTag()) ;
-//                            if ( checduplicate==classTags.size())
-//                            {
-//                                editTextalertInput.setError("Your tag is exist!");
-//                                return;
-//                            }
-//                            ad.dismiss();
-//                            Toast.makeText(MainAddItem.this,"Tag added sucess!",Toast.LENGTH_SHORT).show();
+                            dbManager.addVocabulary(new classVocabulary(ObjectIntent.getmID(),editTextVocabInput.getText().toString(),editTextVocabDetail.getText().toString()));
+                            ad.dismiss();
+                            Toast.makeText(MainAddItem.this,"Vocabulary added sucess!",Toast.LENGTH_SHORT).show();
                         }
                     });
                     buttonVocabNo.setOnClickListener(new View.OnClickListener() {
