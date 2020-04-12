@@ -54,9 +54,6 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        Intent intent= new Intent(Maintagchoose.this,MainActivity.class);
-        startActivity(intent);
-        finish();
         super.onBackPressed();
     }
 
@@ -83,8 +80,6 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
         toolbarTagChoose.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Maintagchoose.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -94,7 +89,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
     {
         classTags= dbManager.GetAllTag();
         toolbarTagChoose.setTitle("List your tag ("+ classTags.size()+" )" );
-        tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags,false);
+        tagAlertAdapter= new TagAlertAdapter(Maintagchoose.this,R.layout.layout_item_tag,classTags,MainActivity.enum_viewlist.viewtag);
         listViewTagChoose.setAdapter(tagAlertAdapter);
         tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
             @Override
@@ -104,6 +99,7 @@ public class Maintagchoose extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dbManager.DeleteTag(classTags.get(position).getId());
+                                dbManager.updateNotesReturnWhenDeleteTag(classTags.get(position).getId());
                                 classTags.clear();
                                 classTags.addAll(dbManager.GetAllTag());
                                 tagAlertAdapter.notifyDataSetChanged();

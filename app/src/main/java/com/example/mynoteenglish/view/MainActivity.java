@@ -1,6 +1,7 @@
 package com.example.mynoteenglish.view;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +23,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.mynoteenglish.R;
 import com.example.mynoteenglish.model.OnlistenerNotes;
+import com.example.mynoteenglish.model.OnlistenerTags;
 import com.example.mynoteenglish.model.classNoteMain;
+import com.example.mynoteenglish.model.classTag;
 import com.example.mynoteenglish.repository.DBManager;
 import com.example.mynoteenglish.viewmodel.NoteMainAdapter;
+import com.example.mynoteenglish.viewmodel.TagAlertAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
+    public static enum  enum_viewlist {viewtag,viewtagchoose,viewtagnavigation,viewtagnavigationcontrol};
     public  static  final String ITEM_SELECT = "item_select";
     public  static  final String FULL_VOCABULARY = "full_vocabulary";
     FloatingActionButton fabAdd;
@@ -42,11 +48,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DBManager dbManager;
     AlertDialog.Builder builder;
     Menu menu;
-    MenuItem menuFind;
+    ClipData.Item item;
+    MenuItem menuFind,menuItem;
     EditText editTextFind;
     //add nagigation
     DrawerLayout drawerLayoutMain;
     NavigationView navigationViewMain;
+    NavigationView navigationViewControl;
+    ListView listViewNavigation;
+    ListView listViewNavigationControl;
+   ArrayList<classTag> classTaglistcontrol;
+    ArrayList<classTag> classTaglist;
+    TagAlertAdapter tagAlertAdapter;
+    TagAlertAdapter tagAlertAdaptercontrol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +70,91 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DrawToolbar();
         SetEventOnclick();
         viewRecyclerviewMain();
+        viewListview();
+    }
+
+    private void viewListview() {
+        classTaglistcontrol= new ArrayList<>();
+        classTaglist= new ArrayList<>();
+        classTaglistcontrol.add(new classTag("0","All notes"));
+        classTaglistcontrol.add(new classTag("1","Favorite notes"));
+        classTaglistcontrol.add(new classTag("2","Vocabulary all"));
+        tagAlertAdaptercontrol= new TagAlertAdapter(MainActivity.this,R.layout.layout_item_navigation,classTaglistcontrol, enum_viewlist.viewtagnavigationcontrol);
+        listViewNavigationControl.setDividerHeight(0);
+        listViewNavigationControl.setAdapter(tagAlertAdaptercontrol);
+        classTaglist.add(new classTag("-1","No Tag"));
+        classTaglist.addAll(dbManager.GetAllTag());
+        tagAlertAdapter= new TagAlertAdapter(MainActivity.this,R.layout.layout_item_navigation,classTaglist, enum_viewlist.viewtagnavigation);
+        listViewNavigation.setAdapter(tagAlertAdapter);
+        tagAlertAdaptercontrol.SetOnItemListenerTag(new OnlistenerTags() {
+            @Override
+            public void Onclicklongtag(View view, int position) {
+
+            }
+
+            @Override
+            public void Onclicktag(View view, int position) {
+
+            }
+
+            @Override
+            public void Onclickshorttag(View view, int position) {
+                switch (position)
+                {
+                    case 0:
+                        arrayList.clear();
+                        arrayList.addAll(dbManager.GetAllNote());
+                        if (arrayList!=null)
+                        {
+                            textViewSumnotes.setText(arrayList.size() + " Notes");
+                        }
+                        else { textViewSumnotes.setText("0 Notes");}
+                        noteMainAdapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        arrayList.clear();
+                        arrayList.addAll(dbManager.GetAllNote_Favorite());
+                        if (arrayList!=null)
+                        {
+                            textViewSumnotes.setText(arrayList.size() + " Notes");
+                        }
+                        else { textViewSumnotes.setText("0 Notes");}
+                        noteMainAdapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        Intent intent =new Intent(MainActivity.this,MainVocabulary.class);
+                        intent.putExtra(FULL_VOCABULARY,"yes");
+                        startActivity(intent);
+
+                        break;
+                }
+                drawerLayoutMain.closeDrawer(Gravity.LEFT);
+            }
+        });
+        tagAlertAdapter.SetOnItemListenerTag(new OnlistenerTags() {
+            @Override
+            public void Onclicklongtag(View view, int position) {
+
+            }
+
+            @Override
+            public void Onclicktag(View view, int position) {
+
+            }
+
+            @Override
+            public void Onclickshorttag(View view, int position) {
+                arrayList.clear();
+                arrayList.addAll(dbManager.GetAllNote_byTagID(classTaglist.get(position).getId()));
+                if (arrayList!=null)
+                {
+                    textViewSumnotes.setText(arrayList.size() + " Notes");
+                }
+                else { textViewSumnotes.setText("0 Notes");}
+                noteMainAdapter.notifyDataSetChanged();
+                drawerLayoutMain.closeDrawer(Gravity.LEFT);
+            }
+        });
     }
 
     private void initilize() {
@@ -73,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewSumnotes= findViewById(R.id.textview_sumnotes);
         textViewTagNotes= findViewById(R.id.textview_tagnote);
         editTextFind= findViewById(R.id.edit_Find);
+        listViewNavigation= findViewById(R.id.listview_navigation);
+        listViewNavigationControl=findViewById(R.id.listviewcontrol_navigation);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,42 +225,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void SetEventOnclick()
     {
         fabAdd.setOnClickListener(this);
-         navigationViewMain.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-             @Override
-             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                 switch (item.getItemId())
-                 {
-                     case R.id.menuitem_allnotes:
-                         arrayList.clear();
-                         arrayList.addAll(dbManager.GetAllNote());
-                         if (arrayList!=null)
-                         {
-                             textViewSumnotes.setText(arrayList.size() + " Notes");
-                         }
-                         else { textViewSumnotes.setText("0 Notes");}
-                         noteMainAdapter.notifyDataSetChanged();
-                         break;
-                     case R.id.menuitem_favoritenotes:
-                         arrayList.clear();
-                         arrayList.addAll(dbManager.GetAllNote_Favorite());
-                         if (arrayList!=null)
-                         {
-                             textViewSumnotes.setText(arrayList.size() + " Notes");
-                         }
-                         else { textViewSumnotes.setText("0 Notes");}
-                         noteMainAdapter.notifyDataSetChanged();
-                         break;
-                     case R.id.menuitem_vocabulary:
-                          Intent intent =new Intent(MainActivity.this,MainVocabulary.class);
-                          intent.putExtra(FULL_VOCABULARY,"yes");
-                          startActivity(intent);
-
-                         break;
-                 }
-                 drawerLayoutMain.closeDrawer(Gravity.LEFT);
-                 return true;
-             }
-         });
+//         navigationViewMain.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//             @Override
+//             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                 switch (item.getItemId())
+//                 {
+//                     case R.id.menuitem_allnotes:
+//                         arrayList.clear();
+//                         arrayList.addAll(dbManager.GetAllNote());
+//                         if (arrayList!=null)
+//                         {
+//                             textViewSumnotes.setText(arrayList.size() + " Notes");
+//                         }
+//                         else { textViewSumnotes.setText("0 Notes");}
+//                         noteMainAdapter.notifyDataSetChanged();
+//                         break;
+//                     case R.id.menuitem_favoritenotes:
+//                         arrayList.clear();
+//                         arrayList.addAll(dbManager.GetAllNote_Favorite());
+//                         if (arrayList!=null)
+//                         {
+//                             textViewSumnotes.setText(arrayList.size() + " Notes");
+//                         }
+//                         else { textViewSumnotes.setText("0 Notes");}
+//                         noteMainAdapter.notifyDataSetChanged();
+//                         break;
+//                     case R.id.menuitem_vocabulary:
+//                          Intent intent =new Intent(MainActivity.this,MainVocabulary.class);
+//                          intent.putExtra(FULL_VOCABULARY,"yes");
+//                          startActivity(intent);
+//
+//                         break;
+//                 }
+//                 drawerLayoutMain.closeDrawer(Gravity.LEFT);
+//                 return true;
+//             }
+//         });
     }
 
     private void DrawToolbar()
@@ -170,6 +272,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbarMain.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                classTaglist.clear();
+                classTaglist.add(new classTag("-1","No Tag"));
+                classTaglist.addAll(dbManager.GetAllTag());
+                tagAlertAdapter.notifyDataSetChanged();
                 drawerLayoutMain.openDrawer(Gravity.LEFT);
             }
         });

@@ -536,7 +536,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 Context context;
                 classTags.add(new classTag("-1","No Tag"));
                 classTags.addAll(dbManager.GetAllTag()) ;
-                tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,true);
+                tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,MainActivity.enum_viewlist.viewtagchoose);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainAddItem.this);
                 builder.setTitle("List all tag");
                 builder.setCancelable(false);
@@ -567,6 +567,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                     public void Onclickshorttag(View view, int position) {
                         buttonTag.setText(classTags.get(position).getTagname());
                         id_tag=   classTags.get(position).getId();
+                        Toast.makeText(MainAddItem.this,"Your tag choose is : "+ classTags.get(position).getTagname()+"",Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.show();
