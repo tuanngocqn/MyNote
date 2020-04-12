@@ -37,7 +37,7 @@ public class VocabularyAdapter extends ArrayAdapter<classVocabulary> {
         TagHolder tagHolder;
         if (convertView==null)
         {
-            convertView= LayoutInflater.from(context).inflate(R.layout.layout_item_tag, parent, false);
+            convertView= LayoutInflater.from(context).inflate(this.resoure, parent, false);
             tagHolder= new TagHolder();
             tagHolder.textViewName= convertView.findViewById(R.id.textviewVocabMain_input);
             tagHolder.textViewContent= convertView.findViewById(R.id.textviewVocabMain_inputdetail);
@@ -57,14 +57,21 @@ public class VocabularyAdapter extends ArrayAdapter<classVocabulary> {
             }
         });
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   onlistenerVocabulary.OnItemClickVocabulary(v,position);
-
-               }
-           }
-        );
+//        convertView.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View v) {
+//                   onlistenerVocabulary.OnItemClickVocabulary(v,position);
+//
+//               }
+//           }
+//        );
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                   onlistenerVocabulary.OnItemLongClickVocabulary(v,position);
+                return true;
+            }
+        });
         return  convertView;
     }
 

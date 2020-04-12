@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
+import com.example.mynoteenglish.model.OnlistenerVocabulary;
+import com.example.mynoteenglish.model.Onlistennertexttospeed;
 import com.example.mynoteenglish.view.MainActivity;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
     private String TAG = "TTS";
     private TextToSpeech tts;
     private String  textTospeak ="";
+    Onlistennertexttospeed onlistennertexttospeed;
     public LibTextToSpeedCompleted(Activity activity) {
         this.mcontext= activity;
         mainActivity= activity;
@@ -144,27 +147,32 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
 
         @Override
         public void onDone(String utteranceId) {
-                Log.d(TAG,"TTS Done");
-            new Thread()
-            {
-                public void run()
-                {
-                    mainActivity.runOnUiThread(new runnable()
-                    {
-                        public void run()
-                        {
+            Log.d(TAG,"TTS Done");
+//            new Thread()
+//            {
+//                public void run()
+//                {
+//                    mainActivity.runOnUiThread(new runnable()
+//                    {
+//                        public void run()
+//                        {
 
                             if (repeat && checkstatus)
                             {
                                 speak(textTospeak);
 
                             }
+                            onlistennertexttospeed.Onlistensucess(mainActivity);
 
-                        }
-                    });
-                }
-            }.start();
+//                        }
+//                    });
+//                }
+//            }.start();
 
         }
     };
+    public  void SetOnEventOnSucess(Onlistennertexttospeed onlistennertexttospeed)
+    {
+        this.onlistennertexttospeed= onlistennertexttospeed;
+    }
 }

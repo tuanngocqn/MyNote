@@ -13,7 +13,7 @@
             android:id="@+id/toolbar_add"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/hinhtoobar" />
+            android:background="@drawable/header" />
     </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fba_add"
@@ -25,7 +25,7 @@
         android:foreground="@drawable/ic_add"
         android:foregroundGravity="center_vertical|center"
         android:tooltipText="Add new session"
-        app:backgroundTint="#FFEB3B" />
+        app:backgroundTint="#4DE8FB" />
   <LinearLayout
       android:layout_marginTop="?attr/actionBarSize"
       android:layout_width="match_parent"

@@ -16,14 +16,14 @@
              android:id="@+id/toolbar_main"
              android:layout_width="match_parent"
              android:layout_height="?attr/actionBarSize"
-             android:background="@drawable/hinhtoobar"
+             android:background="@drawable/header"
              app:titleTextColor="#ffff" >
 
              <com.google.android.material.textfield.TextInputEditText
                  android:id="@+id/edit_Find"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:background="@drawable/outline_button"
+                 android:background="@drawable/outline_button_gradient"
                  android:paddingLeft="10dp"
                  android:visibility="invisible" />
          </androidx.appcompat.widget.Toolbar>
@@ -69,7 +69,7 @@
         android:foreground="@drawable/ic_add"
         android:foregroundGravity="center_vertical|center"
         android:tooltipText="Add new session"
-        app:backgroundTint="#FFEB3B" />
+        app:backgroundTint="#4DE8FB" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <com.google.android.material.navigation.NavigationView

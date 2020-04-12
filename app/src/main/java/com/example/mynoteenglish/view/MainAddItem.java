@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainAddItem extends AppCompatActivity implements View.OnClickListener{
+    final public static String getIdVocabulary= "ID_VOCABULARY";
     boolean statusPlay=false,statusLike=false,isStatusSaved=false,statusRepeat=false;
     AlertDialog.Builder builder;
     DBManager dbManager;
@@ -229,6 +230,8 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                  ObjectIntent.setmID(String.valueOf(dbManager.GetID(classNoteMain)));
                  Toast.makeText(MainAddItem.this,"Add new success!",Toast.LENGTH_SHORT).show();
              }
+             isStatusSaved=false;
+
      }
      private  void Checksavedata()
      {
@@ -240,34 +243,28 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                  @Override
                  public void onClick(DialogInterface dialog, int which) {
                      SaveUpdated();
+                     isStatusSaved=false;
                      dialog.dismiss();
-                     Intent intent= new Intent(MainAddItem.this,MainActivity.class);
-                     startActivity(intent);
                      finish();
                  }
              });
              builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                  @Override
                  public void onClick(DialogInterface dialog, int which) {
-                         dialog.dismiss();
-                     Intent intent= new Intent(MainAddItem.this,MainActivity.class);
-                     startActivity(intent);
+                     dialog.dismiss();
                      finish();
                  }
              });
              builder.setNeutralButton("Canel", new DialogInterface.OnClickListener() {
                  @Override
                  public void onClick(DialogInterface dialog, int which) {
-                     dialog.dismiss();
+                     dialog.cancel();
                  }
              });
              builder.show();
          }
-
          else
          {
-             Intent intent= new Intent(MainAddItem.this,MainActivity.class);
-             startActivity(intent);
              finish();
          }
      }
@@ -310,14 +307,10 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         Text2Speed.SetStop();
-        Checksavedata();
         if (isStatusSaved)
-        {
+        {   Checksavedata();
             return;
         }
-        Intent intent= new Intent(MainAddItem.this,MainActivity.class);
-        startActivity(intent);
-        finish();
         super.onBackPressed();
     }
 
@@ -344,7 +337,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 {
                     item.setIcon(R.drawable.ic_save_gray_24dp);
                     SaveUpdated();
-                    isStatusSaved=false;
+
                 }
                 break;
             case R.id.menu_tag:
@@ -388,6 +381,18 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 });
 
              break;
+            case  R.id.menu_vocabulary:
+                Intent intent = new Intent(MainAddItem.this,MainVocabulary.class);
+                if (ObjectIntent!=null)
+                {
+                    intent.putExtra(getIdVocabulary, ObjectIntent.getmID());
+                }
+                else
+                {
+                    intent.putExtra(getIdVocabulary, "-1");
+                }
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -527,7 +532,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
             case  R.id.button_Tag:
                 classTags.clear();
                 Context context;
-
                 classTags.add(new classTag("-1","No Tag"));
                 classTags.addAll(dbManager.GetAllTag()) ;
                 tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,true);

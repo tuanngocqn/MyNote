@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.menu_management :
                 Intent intent= new Intent(MainActivity.this, Maintagchoose.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.menu_find :
              //   Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fba_main:
                 Intent intent= new Intent(MainActivity.this, MainAddItem.class);
                 startActivity(intent);
-                finish();
                 break;
             default:
                 break;
@@ -179,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent= new Intent(MainActivity.this, MainAddItem.class);
                 intent.putExtra(ITEM_SELECT,arrayList.get(position));
                 startActivity(intent);
-                finish();
             }
 
             @Override
@@ -190,6 +188,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(DialogInterface dialog, int which) {
                                 dbManager.Delete(arrayList.get(position).getmID());
                                 arrayList.remove(position);
+                                if (arrayList!=null)
+                                {
+                                    textViewSumnotes.setText(arrayList.size() + " Notes");
+                                }
+                                else { textViewSumnotes.setText("0 Notes");}
                                 noteMainAdapter.notifyDataSetChanged();
                             }
                         })

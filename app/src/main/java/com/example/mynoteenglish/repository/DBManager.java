@@ -156,7 +156,8 @@ public class DBManager extends SQLiteOpenHelper {
             while (cursor.moveToNext());
         }
         return classNoteMains;
-    } public ArrayList<classNoteMain> GetAllNote_Search(String itemfind) {
+    }
+    public ArrayList<classNoteMain> GetAllNote_Search(String itemfind) {
         ArrayList<classNoteMain> classNoteMains= new ArrayList<>();
         String selectQuery= "SELECT * FROM "+ TABLE_NAME+ " WHERE "+
                 NAME +" LIKE "+ " '%"+itemfind+ "%' OR "+
@@ -247,6 +248,45 @@ public class DBManager extends SQLiteOpenHelper {
         contentValues.put(CONTENT,vocabulary.getContent());
         db.update(TABLE_NAME_VOCABULARY,contentValues,ID+"=?", new String[]{String.valueOf(vocabulary.getId())});
         db.close();
+    }
+    public ArrayList<classVocabulary> GetAllVocabulary() {
+        ArrayList<classVocabulary> classVocabularies= new ArrayList<>();
+        String selectQuery= "SELECT * FROM "+ TABLE_NAME_VOCABULARY;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst())
+        {
+            do {
+                classVocabulary classNoteMain= new classVocabulary();
+                classNoteMain.setId(cursor.getString(0));
+                classNoteMain.setIdnote(cursor.getString(1));
+                classNoteMain.setName(cursor.getString(2));
+                classNoteMain.setContent(cursor.getString(3));
+                classVocabularies.add(classNoteMain);
+            }
+            while (cursor.moveToNext());
+        }
+        return classVocabularies;
+    }
+    public ArrayList<classVocabulary> GetAllVocabularyByID(String id) {
+        ArrayList<classVocabulary> classVocabularies= new ArrayList<>();
+        String selectQuery="SELECT * from "+ TABLE_NAME_VOCABULARY + " WHERE "+
+                IDNOTE + " =?";
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,new String[]{id});
+        if (cursor.moveToFirst())
+        {
+            do {
+                classVocabulary classNoteMain= new classVocabulary();
+                classNoteMain.setId(cursor.getString(0));
+                classNoteMain.setIdnote(cursor.getString(1));
+                classNoteMain.setName(cursor.getString(2));
+                classNoteMain.setContent(cursor.getString(3));
+                classVocabularies.add(classNoteMain);
+            }
+            while (cursor.moveToNext());
+        }
+        return classVocabularies;
     }
 
 }

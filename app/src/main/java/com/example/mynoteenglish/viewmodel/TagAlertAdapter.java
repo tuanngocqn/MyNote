@@ -41,7 +41,7 @@ public class TagAlertAdapter extends ArrayAdapter<classTag> {
         TagHolder tagHolder;
         if (convertView==null)
         {
-            convertView= LayoutInflater.from(context).inflate(R.layout.layout_item_tag, parent, false);
+            convertView= LayoutInflater.from(context).inflate(this.resoure, parent, false);
             tagHolder= new TagHolder();
             tagHolder.textViewTagName= convertView.findViewById(R.id.textviewtag_name);
             tagHolder.buttontagEdit= convertView.findViewById(R.id.buttontag_edit);
