@@ -6,23 +6,26 @@
     android:layout_height="match_parent"
     android:background="#000000"
     tools:context=".view.MainAnimation">
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
+
+    <TextView
+        android:id="@+id/textview_animation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_gravity="center"
-            android:background="@drawable/english"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="#FCFDFD"
-            android:textSize="30dp"
-            android:text="Note to learn english"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_animation"
+        android:layout_marginTop="10dp"
+        android:text="Note to learn english"
+        android:textAlignment="center"
+        android:textColor="#FCFDFD"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/image_animation"
+        android:layout_width="203dp"
+        android:layout_height="206dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/english" />
+
 </RelativeLayout>
