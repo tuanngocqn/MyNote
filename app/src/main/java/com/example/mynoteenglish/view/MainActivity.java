@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dbManager.Delete(arrayList.get(position).getmID());
+                                dbManager.DeleteVocabularyByNotes(arrayList.get(position).getmID());
                                 arrayList.remove(position);
                                 if (arrayList!=null)
                                 {

@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -139,6 +140,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
         }
         id_tag= classNoteMain.getmTagName();
         editName.setText(classNoteMain.getmName());
+        edittextTextInput .setTypeface(Typeface.DEFAULT);
         edittextTextInput.setText(classNoteMain.getmContent());
       //  buttonTag.setText(classNoteMain.getmTagName());
         buttonTag.setText(dbManager.GetNameTagbyID(id_tag));
@@ -537,6 +539,7 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                 tagAlertAdapter=new TagAlertAdapter(MainAddItem.this,R.layout.layout_item_tag,classTags,true);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainAddItem.this);
                 builder.setTitle("List all tag");
+                builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

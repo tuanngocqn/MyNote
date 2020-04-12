@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -88,12 +89,12 @@ public class MainVocabulary extends AppCompatActivity  {
             public void Onlistensucess(Activity view) {
                 if (!status_language)
                 {
-
                     Text2Speed.speak(classVocabularies.get(positionspeak).getContent());
                     status_language=true;
                 }
             }
         });
+
     }
     private void ViewListviewAdaptor() {
         classVocabularies= dbManager.GetAllVocabularyByID(getIdVocabulary());
@@ -104,9 +105,9 @@ public class MainVocabulary extends AppCompatActivity  {
             public void OnItemClickVocabulary(View view, int position) {
                 Text2Speed.SetLanguage(Locale.ENGLISH);
                 Text2Speed.speak(classVocabularies.get(position).getName());
-                status_language=false;
-                Text2Speed.SetLanguage(new Locale("vi","VN"));
                 positionspeak=position;
+                Text2Speed.SetLanguage(new Locale("vi","VN"));
+                status_language=false;
             }
 
             @Override

@@ -96,7 +96,7 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         {
             this.Ready=true;
             Locale currentLanguage= tts.getVoice().getLocale();
-            Toast.makeText(mainActivity,"Language "+ currentLanguage,Toast.LENGTH_SHORT).show();
+           // Toast.makeText(mainActivity,"Language "+ currentLanguage,Toast.LENGTH_SHORT).show();
         }
     }
     public  void SetSpeed(Float value)
@@ -148,27 +148,12 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         @Override
         public void onDone(String utteranceId) {
             Log.d(TAG,"TTS Done");
-//            new Thread()
-//            {
-//                public void run()
-//                {
-//                    mainActivity.runOnUiThread(new runnable()
-//                    {
-//                        public void run()
-//                        {
+            if (repeat && checkstatus)
+            {
+                speak(textTospeak);
 
-                            if (repeat && checkstatus)
-                            {
-                                speak(textTospeak);
-
-                            }
-                            onlistennertexttospeed.Onlistensucess(mainActivity);
-
-//                        }
-//                    });
-//                }
-//            }.start();
-
+            }
+            onlistennertexttospeed.Onlistensucess(mainActivity);
         }
     };
     public  void SetOnEventOnSucess(Onlistennertexttospeed onlistennertexttospeed)

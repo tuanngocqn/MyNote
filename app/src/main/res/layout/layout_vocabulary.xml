@@ -28,7 +28,7 @@
        android:layout_marginTop="5dp"
        android:id="@+id/buttonvocab_Play"
        android:layout_alignParentEnd="true"
-       android:background="@drawable/ic_speaker_none"
+       android:background="@drawable/speaker"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
 </RelativeLayout>

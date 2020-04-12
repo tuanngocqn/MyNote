@@ -288,5 +288,9 @@ public class DBManager extends SQLiteOpenHelper {
         }
         return classVocabularies;
     }
+    public void DeleteVocabularyByNotes(String getmID) {
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME_VOCABULARY,IDNOTE+" =?",new String[]{getmID});
+    }
 
 }
