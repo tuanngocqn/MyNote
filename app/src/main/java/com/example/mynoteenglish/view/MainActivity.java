@@ -32,6 +32,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     public  static  final String ITEM_SELECT = "item_select";
+    public  static  final String FULL_VOCABULARY = "full_vocabulary";
     FloatingActionButton fabAdd;
     Toolbar toolbarMain;
     RecyclerView recyclerViewMain;
@@ -122,8 +123,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void SetEventOnclick()
     {
         fabAdd.setOnClickListener(this);
+         navigationViewMain.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+             @Override
+             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                 switch (item.getItemId())
+                 {
+                     case R.id.menuitem_allnotes:
+                         arrayList.clear();
+                         arrayList.addAll(dbManager.GetAllNote());
+                         if (arrayList!=null)
+                         {
+                             textViewSumnotes.setText(arrayList.size() + " Notes");
+                         }
+                         else { textViewSumnotes.setText("0 Notes");}
+                         noteMainAdapter.notifyDataSetChanged();
+                         break;
+                     case R.id.menuitem_favoritenotes:
+                         arrayList.clear();
+                         arrayList.addAll(dbManager.GetAllNote_Favorite());
+                         if (arrayList!=null)
+                         {
+                             textViewSumnotes.setText(arrayList.size() + " Notes");
+                         }
+                         else { textViewSumnotes.setText("0 Notes");}
+                         noteMainAdapter.notifyDataSetChanged();
+                         break;
+                     case R.id.menuitem_vocabulary:
+                          Intent intent =new Intent(MainActivity.this,MainVocabulary.class);
+                          intent.putExtra(FULL_VOCABULARY,"yes");
+                          startActivity(intent);
 
-
+                         break;
+                 }
+                 drawerLayoutMain.closeDrawer(Gravity.LEFT);
+                 return true;
+             }
+         });
     }
 
     private void DrawToolbar()

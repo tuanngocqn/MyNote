@@ -26,7 +26,7 @@
     android:foreground="@drawable/ic_add"
     android:foregroundGravity="center_vertical|center"
     android:tooltipText="Add new tag"
-    app:backgroundTint="#FFEB3B" />
+    app:backgroundTint="#4DE8FB" />
 <LinearLayout
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_width="match_parent"

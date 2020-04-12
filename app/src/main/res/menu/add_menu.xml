@@ -13,7 +13,7 @@
         app:showAsAction="always"/>
     <item
     android:id="@+id/menu_tag"
-    android:icon="@drawable/ic_turned_in_black_24dp"
+    android:icon="@drawable/ic_english"
     android:orderInCategory="2"
     android:title="Tag"
     app:showAsAction="always" />

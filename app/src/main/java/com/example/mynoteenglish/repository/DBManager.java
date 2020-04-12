@@ -183,6 +183,30 @@ public class DBManager extends SQLiteOpenHelper {
         }
         return classNoteMains;
     }
+    public ArrayList<classNoteMain> GetAllNote_Favorite() {
+        ArrayList<classNoteMain> classNoteMains= new ArrayList<>();
+        String selectQuery= "SELECT * FROM "+ TABLE_NAME+ " WHERE "+
+                FAVORITE + " =?" ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor= db.rawQuery(selectQuery, new String[]{"true"});
+        if (cursor.moveToFirst())
+        {
+            do {
+                classNoteMain classNoteMain= new classNoteMain();
+                classNoteMain.setmID(cursor.getString(0));
+                classNoteMain.setmName(cursor.getString(1));
+                classNoteMain.setmContent(cursor.getString(2));
+                classNoteMain.setmDateCreate(cursor.getString(3));
+                classNoteMain.setmDateUpdate(cursor.getString(4));
+                classNoteMain.setmTagName(cursor.getString(5));
+                classNoteMain.setmFavorite(cursor.getString(6));
+                classNoteMains.add(classNoteMain);
+            }
+            while (cursor.moveToNext());
+        }
+        return classNoteMains;
+    }
     public ArrayList<classTag> GetAllTag() {
         ArrayList<classTag> alltag= new ArrayList<>();
         String selectQuery= "SELECT * FROM "+ TABLE_NAME_TAG;

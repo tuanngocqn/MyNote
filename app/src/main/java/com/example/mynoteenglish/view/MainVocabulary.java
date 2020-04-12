@@ -97,7 +97,13 @@ public class MainVocabulary extends AppCompatActivity  {
 
     }
     private void ViewListviewAdaptor() {
-        classVocabularies= dbManager.GetAllVocabularyByID(getIdVocabulary());
+        if (getIntent().getStringExtra(MainActivity.FULL_VOCABULARY)!=null) {
+            classVocabularies = dbManager.GetAllVocabulary();
+        }
+        else
+        {
+            classVocabularies = dbManager.GetAllVocabularyByID(getIdVocabulary());
+        }
         vocabularyAdapter= new VocabularyAdapter(MainVocabulary.this,R.layout.layout_vocabulary,classVocabularies,false);
         listViewMainVocabulary.setAdapter(vocabularyAdapter);
         vocabularyAdapter.SetOnItemListenerTag(new OnlistenerVocabulary() {
