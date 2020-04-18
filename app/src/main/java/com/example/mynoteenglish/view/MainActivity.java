@@ -33,6 +33,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 0:
                         arrayList.clear();
                         arrayList.addAll(dbManager.GetAllNote());
+                        Collections.reverse(arrayList);
                         if (arrayList!=null)
                         {
                             textViewSumnotes.setText(arrayList.size() + " Notes");
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 1:
                         arrayList.clear();
                         arrayList.addAll(dbManager.GetAllNote_Favorite());
+                        Collections.reverse(arrayList);
                         if (arrayList!=null)
                         {
                             textViewSumnotes.setText(arrayList.size() + " Notes");
@@ -146,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void Onclickshorttag(View view, int position) {
                 arrayList.clear();
                 arrayList.addAll(dbManager.GetAllNote_byTagID(classTaglist.get(position).getId()));
+                Collections.reverse(arrayList);
                 if (arrayList!=null)
                 {
                     textViewSumnotes.setText(arrayList.size() + " Notes");
@@ -202,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arrayList.clear();
                 arrayList.addAll(dbManager.GetAllNote_Search(editTextFind.getText().toString()));
                 if (arrayList!=null)
-                {
+                {   Collections.reverse(arrayList);
                     textViewSumnotes.setText(arrayList.size() + " Notes");
                 }
                 else { textViewSumnotes.setText("0 Notes");}
@@ -212,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arrayList.clear();
                 arrayList.addAll(dbManager.GetAllNote());
                 if (arrayList!=null)
-                {
+                {    Collections.reverse(arrayList);
                     textViewSumnotes.setText(arrayList.size() + " Notes");
                 }
                 else { textViewSumnotes.setText("0 Notes");}
@@ -299,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         arrayList.clear();
         arrayList.addAll(dbManager.GetAllNote());
+        Collections.reverse(arrayList);
         if (arrayList!=null)
         {
             textViewSumnotes.setText(arrayList.size() + " Notes");

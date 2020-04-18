@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,9 +28,10 @@ import com.example.mynoteenglish.viewmodel.LibTextToSpeedCompleted;
 import com.example.mynoteenglish.viewmodel.VocabularyAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
-public class MainVocabulary extends AppCompatActivity  {
+public class MainVocabulary extends AppCompatActivity implements  View.OnClickListener  {
 
     Toolbar toolbarVocabularyMain;
     ArrayList<classVocabulary> classVocabularies;
@@ -38,11 +41,20 @@ public class MainVocabulary extends AppCompatActivity  {
     AlertDialog.Builder builder;
     LibTextToSpeedCompleted Text2Speed;
     boolean status_language=false;
-    int positionspeak=0;
     ////update
     Button buttonVocabYes,buttonVocabNo;
     EditText editTextVocabInput,editTextVocabDetail;
     TextView textViewVocabTitle;
+    /// Play Repeat
+    Button buttonPlay,buttonSpeed,buttonRepeat;
+    final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
+    int indexSpeed=2;
+    enum enumRepeat {None,OneTime,AllRepeat};
+    enum enumPlay {Stop,Play};
+    enumPlay EnumPlay= enumPlay.Stop;
+    enumRepeat EnumRepeat= enumRepeat.None;
+    int indexcurentRead=0;
+    int indexMaxRead=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +81,9 @@ public class MainVocabulary extends AppCompatActivity  {
     private void Mapping() {
         toolbarVocabularyMain= findViewById(R.id.toolbar_vocab);
         listViewMainVocabulary= findViewById(R.id.listview_mainvocab);
+        buttonPlay= findViewById(R.id.button_Playvocab);
+        buttonSpeed=findViewById(R.id.button_Speedvocab);
+        buttonRepeat=findViewById(R.id.button_repeatvocab);
     }
     private void DrawToolbar()
     {
@@ -95,20 +110,58 @@ public class MainVocabulary extends AppCompatActivity  {
             public void Onlistensucess(Activity view) {
                 if (!status_language)
                 {
-                    Text2Speed.speak(classVocabularies.get(positionspeak).getContent());
-                    status_language=true;
+                    Text2Speed.speak(classVocabularies.get(indexcurentRead).getContent());
+                    if (EnumRepeat==enumRepeat.OneTime || EnumRepeat==enumRepeat.AllRepeat)
+                    {
+                        if (EnumRepeat==enumRepeat.AllRepeat)
+                        {
+                            indexcurentRead++;
+                            if (indexcurentRead==indexMaxRead)
+                            {
+                                indexcurentRead=0;
+                            }
+                        }
+                        buttonPlay.setBackgroundResource(R.drawable.ic_stop_black_24dp);
+                        EnumPlay=enumPlay.Play;
+                        listViewMainVocabulary.smoothScrollToPosition(indexcurentRead);
+                        SpeakEnglish(indexcurentRead);
+
+                    }
+                    else
+                    {
+                        buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                        EnumPlay=enumPlay.Stop;
+                        status_language=true;
+                    }
+
                 }
             }
         });
+        buttonRepeat.setOnClickListener(this);
+        buttonPlay.setOnClickListener(this);
+        buttonSpeed.setOnClickListener(this);
+    }
+    private void SpeakEnglish(int position)
+    {
+        Text2Speed.SetLanguage(Locale.ENGLISH);
+        Text2Speed.speak(classVocabularies.get(indexcurentRead).getName());
+        Text2Speed.SetLanguage(new Locale("vi","VN"));
+        status_language=false;
 
     }
     private void ViewListviewAdaptor() {
         if (getIntent().getStringExtra(MainActivity.FULL_VOCABULARY)!=null) {
             classVocabularies = dbManager.GetAllVocabulary();
+            Collections.reverse(classVocabularies);
+            indexcurentRead=0;
+            indexMaxRead= classVocabularies.size();
         }
         else
         {
             classVocabularies = dbManager.GetAllVocabularyByID(getIdVocabulary());
+            Collections.reverse(classVocabularies);
+            indexcurentRead=0;
+            indexMaxRead= classVocabularies.size();
         }
         vocabularyAdapter= new VocabularyAdapter(MainVocabulary.this,R.layout.layout_vocabulary,classVocabularies,false);
         listViewMainVocabulary.setAdapter(vocabularyAdapter);
@@ -135,6 +188,9 @@ public class MainVocabulary extends AppCompatActivity  {
                         dbManager.updateVocabulary(new classVocabulary(classVocabularies.get(position).getId(),classVocabularies.get(position).getIdnote(),editTextVocabInput.getText().toString(),editTextVocabDetail.getText().toString()));
                         classVocabularies.clear();
                         classVocabularies.addAll( dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                        Collections.reverse(classVocabularies);
+                        indexcurentRead=0;
+                        indexMaxRead= classVocabularies.size();
                         vocabularyAdapter.notifyDataSetChanged();
                         ad.dismiss();
                         Toast.makeText(MainVocabulary.this,"Vocabulary updated sucess!",Toast.LENGTH_SHORT).show();
@@ -153,9 +209,10 @@ public class MainVocabulary extends AppCompatActivity  {
             public void OnItemClickVocabulary(View view, int position) {
                 Text2Speed.SetLanguage(Locale.ENGLISH);
                 Text2Speed.speak(classVocabularies.get(position).getName());
-                positionspeak=position;
+                indexcurentRead=position;
                 Text2Speed.SetLanguage(new Locale("vi","VN"));
                 status_language=false;
+                Toast.makeText(MainVocabulary.this,classVocabularies.get(indexcurentRead).getName(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -168,6 +225,9 @@ public class MainVocabulary extends AppCompatActivity  {
                           dbManager.DeleteVocabulary(classVocabularies.get(position).getId());
                           classVocabularies.clear();
                           classVocabularies.addAll( dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                          Collections.reverse(classVocabularies);
+                          indexcurentRead=0;
+                          indexMaxRead= classVocabularies.size();
                           vocabularyAdapter.notifyDataSetChanged();
                     }
                 });
@@ -182,4 +242,67 @@ public class MainVocabulary extends AppCompatActivity  {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.button_Playvocab:
+                if (EnumPlay==enumPlay.Stop) {
+                    buttonPlay.setBackgroundResource(R.drawable.ic_stop_black_24dp);
+                    EnumPlay=enumPlay.Play;
+                    Text2Speed.SetLanguage(Locale.ENGLISH);
+                    Text2Speed.speak(classVocabularies.get(indexcurentRead).getName());
+                    Text2Speed.SetLanguage(new Locale("vi","VN"));
+                    status_language=false;
+                    Toast.makeText(MainVocabulary.this,classVocabularies.get(indexcurentRead).getName(),Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Text2Speed.SetStop();
+                    buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                    EnumPlay=enumPlay.Stop;
+                }
+                break;
+            case R.id.button_Speedvocab:
+                Text2Speed.SetStop();
+                buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                EnumPlay=enumPlay.Stop;
+                builder = new AlertDialog.Builder(MainVocabulary.this);
+                builder.setTitle("Choose your speed");
+                builder.setSingleChoiceItems(arraySpeed, indexSpeed, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        indexSpeed= position;
+                        Text2Speed.SetSpeed(Float.valueOf(arraySpeed[position]));
+                        buttonSpeed.setText("Speed x"+arraySpeed[position]);
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
+            case R.id.button_repeatvocab:
+                Text2Speed.SetStop();
+                buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                EnumPlay=enumPlay.Stop;
+                if (EnumRepeat==enumRepeat.None) {
+                    buttonRepeat.setBackgroundResource(R.drawable.ic_repeatred);
+                    EnumRepeat=enumRepeat.OneTime;
+                }
+                else if (EnumRepeat==enumRepeat.OneTime)
+                {
+                    buttonRepeat.setBackgroundResource(R.drawable.ic_repeatall);
+                    EnumRepeat=enumRepeat.AllRepeat;
+                }
+                else
+                {
+                    EnumRepeat=enumRepeat.None;
+                    buttonRepeat.setBackgroundResource(R.drawable.ic_repeatwhite);
+                }
+                break;
+            default:
+                break;
+
+
+        }
+    }
 }

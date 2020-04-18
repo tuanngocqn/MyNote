@@ -511,8 +511,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                     Toast.makeText(MainAddItem.this,"Please save this note!",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if ((endSelectText- startSelectText)>0) {
                     String textgeted = edittextTextInput.getText().toString().substring(startSelectText,endSelectText);
                     View view = View.inflate(this, R.layout.alertaddvocabulary, null);
                     final AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -525,7 +523,15 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
                     editTextVocabInput= view.findViewById(R.id.editextvocab_input);
                     editTextVocabInput.setText(textgeted);
                     editTextVocabDetail= view.findViewById(R.id.editextvocab_inputdetail);
-                    editTextVocabDetail.requestFocus();
+                    if ((endSelectText-startSelectText)>0)
+                    {
+                        editTextVocabDetail.requestFocus();
+                    }
+                    else
+                    {
+                        editTextVocabInput.requestFocus();
+                    }
+
                     buttonVocabYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -541,7 +547,6 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
 
                         }
                     });
-                }
                 break;
             case  R.id.button_Tag:
                 classTags.clear();

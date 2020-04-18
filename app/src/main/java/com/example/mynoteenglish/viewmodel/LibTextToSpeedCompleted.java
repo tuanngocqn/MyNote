@@ -152,11 +152,25 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         @Override
         public void onDone(String utteranceId) {
             Log.d(TAG,"TTS Done");
-            if (repeat && checkstatus)
+            new Thread()
             {
-                speak(textTospeak);
+                public void run()
+                {
+                    mainActivity.runOnUiThread(new runnable()
+                    {
+                        public void run()
+                        {
+                            if (repeat && checkstatus)
+                            {
+                               speak(textTospeak);
+                               // Toast.makeText(mainActivity, textTospeak,Toast.LENGTH_SHORT).show();
+                            }
 
-            }
+                        }
+                    });
+                }
+            }.start();
+
             onlistennertexttospeed.Onlistensucess(mainActivity);
         }
     };
