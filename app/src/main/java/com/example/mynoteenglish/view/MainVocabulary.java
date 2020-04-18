@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,10 @@ public class MainVocabulary extends AppCompatActivity  {
     LibTextToSpeedCompleted Text2Speed;
     boolean status_language=false;
     int positionspeak=0;
+    ////update
+    Button buttonVocabYes,buttonVocabNo;
+    EditText editTextVocabInput,editTextVocabDetail;
+    TextView textViewVocabTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +113,42 @@ public class MainVocabulary extends AppCompatActivity  {
         vocabularyAdapter= new VocabularyAdapter(MainVocabulary.this,R.layout.layout_vocabulary,classVocabularies,false);
         listViewMainVocabulary.setAdapter(vocabularyAdapter);
         vocabularyAdapter.SetOnItemListenerTag(new OnlistenerVocabulary() {
+            @Override
+            public void OnItemClickEditVocabulary(View view, final int position) {
+                View view_edit = View.inflate(MainVocabulary.this, R.layout.alertaddvocabulary, null);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(MainVocabulary.this);
+                alert.setView(view_edit);
+                final AlertDialog ad= alert.show();
+                textViewVocabTitle= view_edit.findViewById(R.id.texviewvocab_title);
+                textViewVocabTitle.setText("Update your vocabulary");
+                buttonVocabNo= view_edit.findViewById(R.id.buttonvocab_no);
+                buttonVocabYes= view_edit.findViewById(R.id.buttonvocab_yes);
+                buttonVocabYes.setText("Update");
+                editTextVocabInput= view_edit.findViewById(R.id.editextvocab_input);
+                editTextVocabInput.setText(classVocabularies.get(position).getName());
+                editTextVocabDetail= view_edit.findViewById(R.id.editextvocab_inputdetail);
+                editTextVocabDetail.setText(classVocabularies.get(position).getContent());
+                editTextVocabInput.requestFocus();
+                buttonVocabYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dbManager.updateVocabulary(new classVocabulary(classVocabularies.get(position).getId(),classVocabularies.get(position).getIdnote(),editTextVocabInput.getText().toString(),editTextVocabDetail.getText().toString()));
+                        classVocabularies.clear();
+                        classVocabularies.addAll( dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                        vocabularyAdapter.notifyDataSetChanged();
+                        ad.dismiss();
+                        Toast.makeText(MainVocabulary.this,"Vocabulary updated sucess!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                buttonVocabNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ad.dismiss();
+
+                    }
+                });
+            }
+
             @Override
             public void OnItemClickVocabulary(View view, int position) {
                 Text2Speed.SetLanguage(Locale.ENGLISH);

@@ -41,7 +41,7 @@ public class VocabularyAdapter extends ArrayAdapter<classVocabulary> {
             tagHolder= new TagHolder();
             tagHolder.textViewName= convertView.findViewById(R.id.textviewVocabMain_input);
             tagHolder.textViewContent= convertView.findViewById(R.id.textviewVocabMain_inputdetail);
-            tagHolder.buttonplay= convertView.findViewById(R.id.buttonvocab_Play);
+            tagHolder.buttonEdit= convertView.findViewById(R.id.buttonvocab_Edit);
             convertView.setTag(tagHolder);
         }
         else
@@ -50,21 +50,21 @@ public class VocabularyAdapter extends ArrayAdapter<classVocabulary> {
         }
         tagHolder.textViewName.setText(classVocabularies.get(position).getName());
         tagHolder.textViewContent.setText(classVocabularies.get(position).getContent());
-        tagHolder.buttonplay.setOnClickListener(new View.OnClickListener() {
+        tagHolder.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onlistenerVocabulary.OnItemClickVocabulary(v,position);
+                onlistenerVocabulary.OnItemClickEditVocabulary(v,position);
             }
         });
 
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//               @Override
-//               public void onClick(View v) {
-//                   onlistenerVocabulary.OnItemClickVocabulary(v,position);
-//
-//               }
-//           }
-//        );
+        convertView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   onlistenerVocabulary.OnItemClickVocabulary(v,position);
+
+               }
+           }
+        );
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -80,7 +80,7 @@ public class VocabularyAdapter extends ArrayAdapter<classVocabulary> {
     {
         TextView textViewName;
         TextView textViewContent;
-        ImageButton buttonplay;
+        ImageButton buttonEdit;
     }
     public void SetOnItemListenerTag(OnlistenerVocabulary onlistenerVocabulary)
     {
