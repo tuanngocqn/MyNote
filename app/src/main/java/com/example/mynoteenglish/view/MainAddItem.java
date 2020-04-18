@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.mynoteenglish.R;
 import com.example.mynoteenglish.model.OnlistenerTags;
+import com.example.mynoteenglish.model.Onlistennertexttospeed;
 import com.example.mynoteenglish.model.OnselectchangeEdit;
 import com.example.mynoteenglish.model.classNoteMain;
 import com.example.mynoteenglish.model.classTag;
@@ -211,6 +213,16 @@ public class MainAddItem extends AppCompatActivity implements View.OnClickListen
              @Override
              public void afterTextChanged(Editable s) {
 
+             }
+         });
+         Text2Speed.SetOnEventOnSucess(new Onlistennertexttospeed() {
+             @Override
+             public void Onlistensucess(Activity view) {
+                  if (Text2Speed.isRepeat()==false)
+                  {
+                      statusPlay=false;
+                      buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                  }
              }
          });
 

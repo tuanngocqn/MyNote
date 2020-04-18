@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
 {
 
+
     boolean repeat =false,checkstatus=false;
     Context mcontext;
     Activity mainActivity;
@@ -108,9 +109,12 @@ public class LibTextToSpeedCompleted implements TextToSpeech.OnInitListener
         tts.stop();
 
     }
-    public void SetRepeat(boolean status)
-    {
-       repeat=status;
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public void SetRepeat(boolean repeat) {
+        this.repeat = repeat;
     }
     private void setTtsListener() {
 
