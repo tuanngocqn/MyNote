@@ -46,15 +46,19 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
     EditText editTextVocabInput,editTextVocabDetail;
     TextView textViewVocabTitle;
     /// Play Repeat
-    Button buttonPlay,buttonSpeed,buttonRepeat;
+    Button buttonPlay,buttonSpeed,buttonRepeat,buttonRepeatNum;
     final String[] arraySpeed=  {"0.3","0.6","1","1.3","1.7","2","2.5","3","4","5"};
+    final String[] arrayRepeat=  {"1","2","3","4","5","6","7","8","9","10"};
     int indexSpeed=2;
+    int indexRepeatNum=0;
+    int valueRepeatNum=1;
     enum enumRepeat {None,OneTime,AllRepeat};
     enum enumPlay {Stop,Play};
     enumPlay EnumPlay= enumPlay.Stop;
     enumRepeat EnumRepeat= enumRepeat.None;
     int indexcurentRead=0;
     int indexMaxRead=0;
+    int valuecurentRepeatNum=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,7 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
         buttonPlay= findViewById(R.id.button_Playvocab);
         buttonSpeed=findViewById(R.id.button_Speedvocab);
         buttonRepeat=findViewById(R.id.button_repeatvocab);
+        buttonRepeatNum=findViewById(R.id.button_RepeatNum);
     }
     private void DrawToolbar()
     {
@@ -115,7 +120,12 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
                     {
                         if (EnumRepeat==enumRepeat.AllRepeat)
                         {
-                            indexcurentRead++;
+                            valuecurentRepeatNum++;
+                            if (valuecurentRepeatNum==valueRepeatNum ){
+                                valuecurentRepeatNum=0;
+                                indexcurentRead++;
+                            }
+
                             if (indexcurentRead==indexMaxRead)
                             {
                                 indexcurentRead=0;
@@ -140,6 +150,7 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
         buttonRepeat.setOnClickListener(this);
         buttonPlay.setOnClickListener(this);
         buttonSpeed.setOnClickListener(this);
+        buttonRepeatNum.setOnClickListener(this);
     }
     private void SpeakEnglish(int position)
     {
@@ -298,6 +309,24 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
                     EnumRepeat=enumRepeat.None;
                     buttonRepeat.setBackgroundResource(R.drawable.ic_repeatwhite);
                 }
+                break;
+            case R.id.button_RepeatNum:
+                Text2Speed.SetStop();
+                buttonPlay.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                EnumPlay=enumPlay.Stop;
+                builder = new AlertDialog.Builder(MainVocabulary.this);
+                builder.setTitle("Choose your speed");
+                builder.setSingleChoiceItems(arrayRepeat, indexRepeatNum, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        indexRepeatNum= position;
+                        valuecurentRepeatNum=0;
+                        valueRepeatNum= Integer.valueOf( arrayRepeat[position]);
+                        buttonRepeatNum.setText(" "+arrayRepeat[position]);
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
                 break;
             default:
                 break;
