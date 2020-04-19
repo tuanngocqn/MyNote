@@ -198,7 +198,13 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
                     public void onClick(View v) {
                         dbManager.updateVocabulary(new classVocabulary(classVocabularies.get(position).getId(),classVocabularies.get(position).getIdnote(),editTextVocabInput.getText().toString(),editTextVocabDetail.getText().toString()));
                         classVocabularies.clear();
-                        classVocabularies.addAll( dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                        if (getIntent().getStringExtra(MainActivity.FULL_VOCABULARY)!=null) {
+                            classVocabularies.addAll(dbManager.GetAllVocabulary());
+                        }
+                        else
+                        {
+                            classVocabularies.addAll(dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                        }
                         Collections.reverse(classVocabularies);
                         indexcurentRead=0;
                         indexMaxRead= classVocabularies.size();
@@ -235,7 +241,13 @@ public class MainVocabulary extends AppCompatActivity implements  View.OnClickLi
                     public void onClick(DialogInterface dialog, int which) {
                           dbManager.DeleteVocabulary(classVocabularies.get(position).getId());
                           classVocabularies.clear();
-                          classVocabularies.addAll( dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                          if (getIntent().getStringExtra(MainActivity.FULL_VOCABULARY)!=null) {
+                              classVocabularies.addAll(dbManager.GetAllVocabulary());
+                          }
+                          else
+                          {
+                            classVocabularies.addAll(dbManager.GetAllVocabularyByID(getIdVocabulary()));
+                          }
                           Collections.reverse(classVocabularies);
                           indexcurentRead=0;
                           indexMaxRead= classVocabularies.size();
