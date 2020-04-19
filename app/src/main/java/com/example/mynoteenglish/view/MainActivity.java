@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -198,8 +200,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.menu_find :
              //   Toast.makeText(this, "FIND", Toast.LENGTH_SHORT).show();
-                editTextFind.setVisibility(View.VISIBLE);
-                editTextFind.requestFocus();
+            //     editTextFind.setVisibility(View.VISIBLE);
+             //   editTextFind.requestFocus();
                 if (editTextFind.getText().toString().length()==0)
                 {
                     return true;
@@ -266,6 +268,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                 return true;
 //             }
 //         });
+         editTextFind.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+             @Override
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 if (actionId == EditorInfo.IME_ACTION_SEARCH
+                         || actionId == EditorInfo.IME_ACTION_DONE
+                         || event.getAction() == KeyEvent.ACTION_DOWN
+                         && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                     if (editTextFind.getText().toString().length()==0)
+                     {
+                         return true;
+                     }
+                     arrayList.clear();
+                     arrayList.addAll(dbManager.GetAllNote_Search(editTextFind.getText().toString()));
+                     if (arrayList!=null)
+                     {   Collections.reverse(arrayList);
+                         textViewSumnotes.setText(arrayList.size() + " Notes");
+                     }
+                     else { textViewSumnotes.setText("0 Notes");}
+                     noteMainAdapter.notifyDataSetChanged();
+                     return true;
+                 }
+                 return false;
+             }
+         });
     }
 
     private void DrawToolbar()
